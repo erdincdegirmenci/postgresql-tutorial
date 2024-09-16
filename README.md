@@ -252,6 +252,20 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   FROM Sales.Customers;
   ```
   
+### LIKE, ILIKE
+- **`LIKE`,`ILIKE`**  
+  Sorguda yinelenen satırları kaldırarak yalnızca benzersiz değerleri döndürmek için kullanılır.
+  
+  ```sql
+  SELECT empid, firstname, lastname
+  FROM HR.EMPLOYEES
+  WHERE lastname LIKE 'D%';
+
+  SELECT empid, firstname, lastname
+  FROM HR.EMPLOYEES
+  WHERE lastname ILIKE 'D%';
+  ```
+  
 ### OFFSET-FETCH
 - **`OFFSET-FETCH`**  
   Verilerin hangi noktadan itibaren döndürülmeye başlanacağını belirtir. Bu, büyük veri setleriyle çalışırken verilerin sayısını kontrol etmek için kullanılır.
@@ -356,6 +370,23 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
    SELECT POSITION(' ' IN 'Erdinç DEĞİRMENCİ TR');
    SELECT POSITION('TR' IN 'Erdinç DEĞİRMENCİ TR');
   ```
+
+- **`STRPOS`**  
+  String'in bir kısmını almak için kullanılır.
+  
+   ```sql
+   SELECT STRPOS('Erdinç DEĞİRMENCİ TR', ' '); 
+   SELECT STRPOS('Erdinç DEĞİRMENCİ TR', 'TR');
+   ```
+    
+- **`SPLIT_PART`**  
+  String icinde, position ile belirtilen sıradaki bilgiyi getirir.
+  
+   ```sql
+   SELECT SPLIT_PART('Elma,Armut,Muz',',',1); -- Elma
+   SELECT SPLIT_PART('Elma,Armut,Muz',',',2); -- Armut
+   SELECT SPLIT_PART('Elma,Armut,Muz',',',3); -- Muz
+   ```
    
 - **`UPPER`, `LOWER`**  
   String'i büyük harfe veya küçük harfe dönüştürür.
@@ -872,7 +903,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
    ```
    
 ### CASE YAPILARI
-- **`SIMLE CASE`**  
+- **`SIMPLE CASE`**  
   Koşullu mantık sağlar. Belirli koşullara göre değer döndürür.
   
   ```sql
@@ -1384,7 +1415,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 	```
 ## 9. Ek Konular
 
-### NULLS FIRST, NULLS LAST
+### NULLS FIRST, NULLS LAST, NULLIF
 - **`NULLS FIRST`, `NULLS LAST`**  
   NULL değerlerini sıralama sırasında nasıl ele alacağınızı belirler.
   
@@ -1401,6 +1432,8 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 			region
 	FROM HR.Employees
 	ORDER BY region NULLS LAST;
+
+ 	SELECT NULLIF(10,10);
 	```
 
 ### OPERATORLER
