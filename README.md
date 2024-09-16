@@ -82,31 +82,41 @@ SELECT empid, firstname, lastname, country FROM HR.EMPLOYEES;
 ### INSERT
 - **`INSERT`**  
   Yeni veri ekler.
+  ```sql
+  ```
 ### UPDATE
 - **`UPDATE`**  
   Mevcut verileri günceller.
+  ```sql
+  ```
 ### DELETE
 - **`DELETE`**  
   Verileri siler.
-
+```sql
+```
 ### JOIN
 - **`JOIN`,`RIGHT JOIN`, `LEFT JOIN`, `CROSS JOIN`, `FULL JOIN`, `OUTER JOIN`**  
   `JOIN` Birden fazla tabloyu ilişkilendirerek birleştirmenizi sağlar.
+  
   ```sql
   SELECT *
   FROM Sales.Orders as o
   JOIN HR.EMPLOYEES as e on e.empid = o.empid;
   ```
   `RIGHT JOIN` ve `LEFT JOIN` tablolardaki verilerin birleşimini sağlar.
+  
     ```sql
   ```
   `CROSS JOIN` tüm kombinasyonları döndürür.
+  
     ```sql
   ```
   `FULL JOIN` tüm verileri getirir.
+  
     ```sql
   ```
   `OUTER JOIN` ise bazı verileri hariç tutar.
+  
     ```sql
   ```
   
