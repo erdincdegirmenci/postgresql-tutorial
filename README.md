@@ -6,7 +6,7 @@ Bu kılavuz, PostgreSQL Egzersizleri üzerindeki tüm soruları ve cevapları de
 
 ## İçindekiler
 
-## [BAŞLANGIÇ](#başlangic)
+## [BAŞLANGIÇ](#baslangic)
 1. [Temel SQL İşlemleri](#1-temel-sql-işlemleri)
    - [SELECT](#select)
    - [UPDATE](#update)
