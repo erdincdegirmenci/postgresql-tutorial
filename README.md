@@ -548,10 +548,38 @@ SELECT empid, firstname, lastname, country FROM HR.EMPLOYEES;
   Büyük veri kümeleri için etkili bir indeks türüdür.
 
 ### Diğer Yapılar
+- **`SCHEMA`**  
 - **`TABLE`**  
-  Verileri düzenlemek için kullanılır.  
+  Verileri düzenlemek için kullanılır.
+     ```sql
+   CREATE SCHEMA ornek;
+   
+   CREATE TABLE Ornek.Siparis
+   (
+   	orderid Serial Primary Key,
+   	custid int,
+   	empid int,
+   	orderdate Date,
+   	Sehir Varchar(50)
+   );
+     SELECT *
+   FROM Ornek.Siparis;
+    ```
 - **`VIEW`**  
-  Sanal tablo oluşturur.  
+  Sanal tablo oluşturur.
+  ```sql
+         CREATE View Ali.vwRapor1 as
+         SELECT 
+         			orderid,
+         			orderdate,
+         			custid,
+         			empid,
+         			Row_Number() Over(ORDER BY orderdate desc)
+         FROM Sales.Orders;
+  
+   SELECT *
+   	FROM Ali.vwRapor1
+    ```
 - **`SEQUENCE`**  
   Otomatik artan değerler üretir.
 
@@ -560,6 +588,50 @@ SELECT empid, firstname, lastname, country FROM HR.EMPLOYEES;
 ### CTES (Common Table Expressions)
 - **`WITH`**  
   Geçici sonuçlar oluşturur ve sorguların daha okunabilir olmasını sağlar.
+    ```sql
+      WITH
+      Rapor as
+      (
+      	SELECT
+      			empid,
+      			firstname,
+      			lastname,
+      			country,
+      			Row_Number() Over(Partition By country ORDER BY country, firstname) as SiraNo
+      	FROM Hr.employees	
+      )
+      SELECT *
+      FROM Rapor
+      WHERE sirano = 1;
+
+    ```
+    ```sql
+    WITH
+      A as
+      (
+      	SELECT
+      			Extract(Year FROM Orderdate)as Yillar,	
+      			Extract(Month FROM Orderdate)as Aylar,	
+      			SUM(Freight) as ToplamFreight
+      	FROM Sales.Orders
+      	GROUP BY
+      			Extract(Year FROM Orderdate),
+      			Extract(Month FROM Orderdate)
+      ),
+      B as
+      (
+      	SELECT
+      			yillar,
+      			aylar,
+      			toplamfreight,
+      			Row_Number() Over(Partition By yillar ORDER BY toplamfreight desc) as SiraNo
+      	FROM A	
+      )
+      SELECT *
+      FROM B
+      WHERE SiraNo <= 3
+      ORDER BY Yillar;
+    ```
 
 ### ROW_NUMBER
 - **`ROW_NUMBER()`**  
