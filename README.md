@@ -75,8 +75,8 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   PostgreSQL'de verileri sorgulamak için kullanılan `SELECT` komutları, veritabanındaki tablo veya görünümlerden belirli sütunları veya tüm sütunları seçmenizi sağlar. `SELECT *` tüm sütunları seçerken, belirli sütunları belirttiğinizde sadece o sütunları getirir.  
 
 ```sql
-Select *  From HR.EMPLOYEES;
-Select empid, firstname, lastname, country From hr.employees
+SELECT *  FROM HR.EMPLOYEES;
+SELECT empid, firstname, lastname, country FROM HR.EMPLOYEES;
 ```
 
 ### INSERT
@@ -90,77 +90,254 @@ Select empid, firstname, lastname, country From hr.employees
   Verileri siler.
 
 ### JOIN
-- **`RIGHT JOIN`, `LEFT JOIN`, `CROSS JOIN`, `FULL JOIN`, `OUTER JOIN`**  
-  Birden fazla tabloyu ilişkilendirerek birleştirmenizi sağlar. `RIGHT JOIN` ve `LEFT JOIN` tablolardaki verilerin birleşimini sağlarken, `CROSS JOIN` tüm kombinasyonları döndürür. `FULL JOIN` tüm verileri getirir, `OUTER JOIN` ise bazı verileri hariç tutar.
+- **`JOIN`,`RIGHT JOIN`, `LEFT JOIN`, `CROSS JOIN`, `FULL JOIN`, `OUTER JOIN`**  
+  `JOIN` Birden fazla tabloyu ilişkilendirerek birleştirmenizi sağlar.
+  ```sql
+  SELECT *
+  FROM Sales.Orders as o
+  JOIN HR.EMPLOYEES as e on e.empid = o.empid;
+  ```
+  `RIGHT JOIN` ve `LEFT JOIN` tablolardaki verilerin birleşimini sağlar.
+    ```sql
+  ```
+  `CROSS JOIN` tüm kombinasyonları döndürür.
+    ```sql
+  ```
+  `FULL JOIN` tüm verileri getirir.
+    ```sql
+  ```
+  `OUTER JOIN` ise bazı verileri hariç tutar.
+    ```sql
+  ```
+  
 
 ## 2. Filtreleme ve Sıralama
 
 ### WHERE
 - **`WHERE`**  
-  Belirli koşullara uyan verileri sorgulamak için kullanılır. Örneğin, `WHERE age > 30` ifadesi yaşı 30'dan büyük olan verileri getirir.
+  Belirli koşullara uyan verileri sorgulamak için kullanılır.
+  ```sql
+  SELECT empid, firstname, lastname, country
+  FROM hr.employees
+  WHERE country = 'USA';
+  ```
 
 ### GROUP BY
 - **`GROUP BY`**  
-  Verileri belirli bir sütuna göre gruplamak için kullanılır. Örneğin, satış verilerini ürünlere göre gruplamak için `GROUP BY` kullanabilirsiniz.
+  Verileri belirli bir sütuna göre gruplamak için kullanılır.
+  ```sql
+   SELECT
+   		e.empid,
+   FROM Sales.Orders as o
+   JOIN HR.Employees as e on e.empid = o.empid
+   WHERE o.shipcountry = 'USA'
+   GROUP BY e.empid
+  ```
 
 ### ORDER BY
 - **`ORDER BY`**  
   Sorgu sonuçlarını belirli bir sıraya koymak için kullanılır. `ORDER BY` ifadesi ile verileri artan veya azalan sıraya göre düzenleyebilirsiniz.
+  ```sql
+  SELECT empid, firstname, lastname, country
+  FROM hr.employees
+  WHERE country = 'USA'
+  ORDER BY firstname;
+  ```
 
 ### HAVING
 - **`HAVING`**  
-  `GROUP BY` ile gruplanmış veriler üzerinde filtreleme yapmak için kullanılır. Örneğin, sadece 10'dan fazla satışı olan ürünleri gösterebilir.
+  `GROUP BY` ile gruplanmış veriler üzerinde filtreleme yapmak için kullanılır.  [SUM](#aritmetik-fonksiyonlar)
+  ```sql
+   SELECT
+   		e.empid,
+   		SUM(o.freight) as TotalFreight
+   FROM Sales.Orders as o
+   JOIN HR.Employees as e on e.empid = o.empid
+   WHERE o.shipcountry = 'USA'
+   GROUP BY e.empid
+   HAVING SUM(o.freight) > '2000'
+   ORDER BY e.empid;
+  ```
 
 ### BETWEEN
 - **`BETWEEN`**  
-  Belirli bir aralık içindeki verileri seçmek için kullanılır. Örneğin, `BETWEEN 10 AND 20` ifadesi 10 ile 20 arasındaki değerleri getirir.
+  Belirli bir aralık içindeki verileri seçmek için kullanılır. 
+    ```sql
+   SELECT *
+   FROM Sales.Orders
+   WHERE OrderDate NOT BETWEEN '2008-05-01' AND '2008-07-31';
+  ```
 
 ### LIMIT
 - **`LIMIT`**  
-  Sorgu sonuçlarının kaç satır döndürüleceğini belirler.  
+  Sorgu sonuçlarının kaç satır döndürüleceğini belirler.
+   ```sql
+   SELECT empid, firstname, lastname, country
+   FROM hr.employees
+   WHERE country = 'USA'
+   ORDER BY firstname
+   Limit 3;
+  ```
 ### OFFSET-FETCH
 - **`OFFSET-FETCH`**  
   Verilerin hangi noktadan itibaren döndürülmeye başlanacağını belirtir. Bu, büyük veri setleriyle çalışırken verilerin sayısını kontrol etmek için kullanılır.
-
+   ```sql
+   SELECT orderid, orderdate, custid, empid
+   FROM Sales.Orders
+   ORDER BY orderdate, orderid
+   Limit 5 OFFSET 3;
+  ```
+   ```sql
+   SELECT orderid, orderdate, custid, empid
+   FROM Sales.Orders
+   ORDER BY orderdate, orderid
+   FETCH FIRST 1 ROW ONLY;
+  ```
+  ```
+   ```sql
+   SELECT orderid, orderdate, custid, empid
+   FROM Sales.Orders
+   ORDER BY orderdate, orderid
+   OFFSET 3 ROWS FETCH NEXT 5 ROW ONLY;
+  ```
+  ```
+  ```sql
+   SELECT orderid, orderdate, custid, empid
+   FROM Sales.Orders
+   ORDER BY orderdate DESC
+   FETCH NEXT 2 ROWS WITH TIES
+   OFFSET 8;
+  ```
 ## 3. Veri Manipülasyonu ve Fonksiyonlar
 
 ### Aritmetik Fonksiyonlar
 - **`SUM`, `ROUND`, `CEIL`**  
-  `SUM`, bir sütundaki tüm değerlerin toplamını verir. `ROUND` ve `CEIL` sayıları yuvarlamak için kullanılır.
-
+  `SUM`, bir sütundaki tüm değerlerin toplamını verir.
+  `ROUND` ve `CEIL` sayıları yuvarlamak için kullanılır.
+  ```sql
+   SELECT SUM(freight) as TotalFreight  FROM Sales.Orders
+   SELECT Count(*)*0.01 FROM Sales.Orders
+   SELECT CEIL(Count(*)*0.01) FROM Sales.Orders  
+   SELECT Round(Count(*)*0.01) FROM Sales.Orders
+  ```
 ### String Fonksiyonları
 - **`CONCAT`, `CONCAT_WS`**  
-  String'leri birleştirir. `CONCAT_WS` bir ayırıcı kullanarak string'leri birleştirir.  
+  `CONCAT` String'leri birleştirir.
+  ```sql
+   SELECT
+   CONCAT(city, ' ', Region, ' ', Country) As LocationC
+   FROM HR.Employees;
+  ```
+  `CONCAT_WS` bir ayırıcı kullanarak string'leri birleştirir.
+    ```sql
+     SELECT 
+     CONCAT_WS(',', country, region, city )  AS locationC
+     FROM Sales.Customers;
+   ```
 - **`SUBSTRING`**  
-  String'in bir kısmını almak için kullanılır.  
+  String'in bir kısmını almak için kullanılır.
+   ```sql
+     SELECT 
+    'erdinc.degirmenci@outlook.com'
+    ,POSITION('@' IN 'erdinc.degirmenci@outlook.com')
+    ,SUBSTRING('erdinc.degirmenci@outlook.com',1, 11-1)
+    ,SUBSTRING('erdinc.degirmenci@outlook.com',1, POSITION('@' IN 'erdinc.degirmenci@outlook.com')-1);
+   ```
 - **`POSITION`**  
-  Bir substring'in, ana string içindeki konumunu bulur.  
+  Bir substring'in, ana string içindeki konumunu bulur.
+   ```sql
+   SELECT POSITION(' ' IN 'Erdinç DEĞİRMENCİ TR');
+   SELECT POSITION('TR' IN 'Erdinç DEĞİRMENCİ TR');
+  ```
 - **`UPPER`, `LOWER`**  
-  String'i büyük harfe veya küçük harfe dönüştürür.  
+  String'i büyük harfe veya küçük harfe dönüştürür.
+     ```sql
+   SELECT UPPER('amazing SQLData');   
+   SELECT LOWER('amazing SQLData');
+  ```
 - **`REVERSE`**  
   String'in tersini alır.  
 - **`LENGTH`**  
-  String'in uzunluğunu döndürür.  
+  String'in uzunluğunu döndürür.
+  ```sql
+   SELECT LENGTH(N'abcde');
+   SELECT LENGTH('abcde');
+  ```
 - **`INITCAP`**  
-  String'deki her kelimenin ilk harfini büyük yapar.  
-- **`RTRIM`, `LTRIM`, `TRIM`**  
-  String'in sağından, solundan veya her iki tarafından boşlukları temizler.  
+  String'deki her kelimenin ilk harfini büyük yapar.
+   ```sql
+   SELECT INITCAP('amazing SQLData');
+   SELECT INITCAP('select DATA for analyzing');
+  ```
+- **`RTRIM`, `LTRIM`, `TRIM`, `BTRIM`**
+  String'in sağından, solundan veya her iki tarafından boşlukları temizler.
+  ```sql
+   SELECT ltrim('      Hello   World      ');			--Sonuc :  "Hello   World      "
+   SELECT rtrim('      Hello   World      ');			--Sonuc :  "      Hello   World"
+   SELECT rtrim(ltrim('      Hello   World      '));	--Sonuc :  "Hello   World"
+   SELECT trim('      Hello   World      ');			--Sonuc :  "Hello   World"
+   SELECT btrim('      Hello   World      ');			--Sonuc :  "Hello   World"
+  ```
 - **`LPAD`, `RPAD`**  
-  String'i belirli bir uzunluğa kadar sola veya sağa doldurur.  
+  String'i belirli bir uzunluğa kadar sola veya sağa doldurur.
+    ```sql
+   SELECT LPAD('SQL', 15, '*');-- "************SQL"
+   SELECT RPAD('SQL', 15, '*');-- "SQL************"
+   SELECT LPAD('3456', 10, '*');-- "******3456"
+   SELECT LPAD('3456', 10, 'A');-- "AAAAAA3456"
+   SELECT LPAD('3456', 10, '0');-- "0000003456"
+   SELECT  LPAD(9::text,2,'0');
+   SELECT  LPAD(12::text,2,'0');
+   SELECT  (2024||'-'||LPAD(9::text,2,'0')||'-'||LPAD(9::text,2,'0'))::date AS ConstructedDate;
+   SELECT  (2024||'-'||LPAD(12::text,2,'0')||'-'||LPAD(30::text,2,'0'))::date AS ConstructedDate;
+  ```
 - **`REPLACE`**  
-  String içindeki belirli karakterleri veya kelimeleri değiştirir.  
+  String içindeki belirli karakterleri veya kelimeleri değiştirir.
+  ```sql
+   SELECT REPLACE('PostgreSQL SELECT Data', 'data', 'Veri');
+   SELECT REPLACE('PostgreSQL SELECT Data', 'Data', 'Veri');
+  ```
 - **`REGEXP_MATCHES`, `REGEXP_REPLACE`**  
-  Düzenli ifadeler kullanarak string'leri eşleştirir veya değiştirir.  
-- **`REPLICATE`, `REPEAT`**  
+  Düzenli ifadeler kullanarak string'leri eşleştirir veya değiştirir.
+    ```sql
+   SELECT REGEXP_MATCHES('Hello World', 'hello', 'i');
+   SELECT REGEXP_MATCHES('Hello World', 'hello', 'g');
+   SELECT REGEXP_MATCHES('Hello World', 'hello');	
+  ```
+   ```sql
+   SELECT regexp_replace('abc123def456', '\d+', 'XYZ') AS new_text;   
+   SELECT regexp_replace('abc123def456', '\d+', 'DUNYA') AS new_text;
+  ```
+- **`REPEAT`**  
   String'i belirli bir sayıda tekrarlar.  
+   ```sql
+   SELECT REPEAT('abc', 3);
+   SELECT REPEAT('*', 8);
+  ```
 - **`OVERLAY`**  
-  String'in bir kısmını başka bir string ile değiştirir.  
+  String'in bir kısmını başka bir string ile değiştirir.
+   ```sql
+   SELECT OVERLAY ('xyz' Placing 'abc' FROM 2 for 1);
+   SELECT OVERLAY ('abcdexyz' Placing 'elma' FROM 2 for 3);
+   SELECT OVERLAY ('xyz super' Placing 'abc' FROM 2 for 0);
+   SELECT OVERLAY ('VeriTabanı Egitimi' Placing ' Sorgulama' FROM 5 for 6);
+  ```
 - **`FORMAT`**  
   String'i belirli bir formatta döndürür.
+    ```sql
+   SELECT FORMAT('Hello %s', 'World');
+   SELECT FORMAT('Testing %s, %s, %s, %%', 'one', 'two', 'three');
+   SELECT FORMAT('INSERT INTO %I VALUES(%L)', 'Foo bar', 'Reilly');
+  ```
 
 ### Dizi Fonksiyonları
 - **`STRING_TO_ARRAY`**  
-  String'i bir diziye dönüştürür.  
+  String'i bir diziye dönüştürür.
+   ```sql
+   SELECT FORMAT('Hello %s', 'World');
+   SELECT FORMAT('Testing %s, %s, %s, %%', 'one', 'two', 'three');
+   SELECT FORMAT('INSERT INTO %I VALUES(%L)', 'Foo bar', 'Reilly');
+  ```
 - **`REGEXP_SPLIT_TO_ARRAY`, `REGEXP_SPLIT_TO_TABLE`**  
   String'i düzenli ifadeler kullanarak diziye veya tabloya böler.  
 - **`ARRAY_AGG`**  
