@@ -91,6 +91,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Mevcut verileri günceller.
   
 	 ```sql
+  	UPDATE HR.EMPLOYEES SET salary = salary + 500 WHERE id = 1;
 	```
   
 ### DELETE
@@ -98,6 +99,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Verileri siler.
   
 	```sql
+ 	DELETE FROM HR.EMPLOYEES WHERE id = 2;
 	```
  
 ### JOIN
@@ -112,19 +114,59 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   `RIGHT JOIN` ve `LEFT JOIN` tablolardaki verilerin birleşimini sağlar.
   
     ```sql
-  ```
+    SELECT
+    c.custid, c.companyname,
+    o.*	
+    FROM Sales.Orders as o
+    RIGHT JOIN Sales.Customers as c on o.custid = c.custid
+    ORDER BY c.custid;
+    ```
+    ```sql
+    SELECT
+    c.custid, c.companyname,
+    o.orderid, o.orderdate, o.freight,
+    od.*
+    FROM Sales.Customers as c
+    LEFT JOIN Sales.Orders as o on o.custid = c.custid
+    LEFT JOIN Sales.OrderDetails as od on od.orderid = o.orderid
+    LEFT JOIN production.Products as p on p.productid = od.productid	
+    ORDER BY c.custid;
+    ```
+    
+    
   `CROSS JOIN` tüm kombinasyonları döndürür.
   
     ```sql
-  ```
+    SELECT
+    ef.empid,
+    ef.firstname,
+    ef.lastname,
+    ef.ToplamFreight,
+    tf.GenelToplamFreight,
+    ef.ToplamFreight / tf.GenelToplamFreight * 100 AS Oran
+    FROM EmployeeFreight AS ef
+    CROSS JOIN TotalFreight AS tf
+    ORDER BY ef.empid;
+    ```
   `FULL JOIN` tüm verileri getirir.
   
     ```sql
-  ```
+    SELECT *
+    FROM Ali.CityJoin as ci
+    FULL JOIN Ali.CustomersJoin as cu on cu.cityid = ci.cityid;
+    ```
+    
   `OUTER JOIN` ise bazı verileri hariç tutar.
   
     ```sql
-  ```
+    SELECT *
+    FROM Ali.CityJoin as ci
+    LEFT OUTER JOIN Ali.CustomersJoin as cu on cu.cityid = ci.cityid;
+	
+    SELECT *
+    FROM Ali.CityJoin as ci
+    RIGHT OUTER JOIN Ali.CustomersJoin as cu on cu.cityid = ci.cityid;
+    ```
   
 
 ## 2. Filtreleme ve Sıralama
@@ -201,6 +243,15 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
    Limit 3;
   ```
    
+### DISTINCT
+- **`DISTINCT`**  
+  Sorguda yinelenen satırları kaldırarak yalnızca benzersiz değerleri döndürmek için kullanılır.
+  
+  ```sql
+  SELECT DISTINCT country
+  FROM Sales.Customers;
+  ```
+  
 ### OFFSET-FETCH
 - **`OFFSET-FETCH`**  
   Verilerin hangi noktadan itibaren döndürülmeye başlanacağını belirtir. Bu, büyük veri setleriyle çalışırken verilerin sayısını kontrol etmek için kullanılır.
@@ -236,16 +287,38 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 ## 3. Veri Manipülasyonu ve Fonksiyonlar
 
 ### Aritmetik Fonksiyonlar
-- **`SUM`, `ROUND`, `CEIL`**  
+- **`SUM`, `ROUND`, `CEIL`,`MAX`,`MIN`,`AVG`,**  
   `SUM`, bir sütundaki tüm değerlerin toplamını verir.
   `ROUND` ve `CEIL` sayıları yuvarlamak için kullanılır.
   
   ```sql
-  SELECT SUM(freight) as TotalFreight  FROM Sales.Orders
+  SELECT SUM(freight) as TotalFreight  FROM Sales.Orders  
+  SELECT MIN(freight) as MinFreight  FROM Sales.Orders
+  SELECT MAX(freight) as MaxFreight  FROM Sales.Orders  
+  SELECT AVG(freight) as AvgFreight  FROM Sales.Orders
   SELECT Count(*)*0.01 FROM Sales.Orders
   SELECT CEIL(Count(*)*0.01) FROM Sales.Orders  
   SELECT Round(Count(*)*0.01) FROM Sales.Orders
   ```
+### Tip Dönüşümleri
+- **`CAST`**  
+  
+   ```sql
+   SELECT CAST('2024-06-18' as Date);
+   SELECT CAST('18-MAY-2024' as Date);
+   SELECT CAST(123 AS FLOAT);
+   SELECT CAST(123.45 AS INTEGER);
+   ```
+   
+- **`TRY_CAST`**  
+  
+   ```sql
+   SELECT try_cast('2024-02-29', Null::date) AS Tarih;
+   SELECT try_cast('2025-02-29', Null::date) AS Tarih;
+   SELECT try_cast('foo', NULL::varchar);
+   SELECT try_cast('2024-01-41', NULL::date);
+   SELECT try_cast('2024-01-41', CURRENT_DATE);
+   ```
   
 ### String Fonksiyonları
 - **`CONCAT`, `CONCAT_WS`**  
@@ -296,7 +369,13 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   String'in tersini alır.
 
     ```sql
-     ```
+    SELECT REVERSE('abcde');
+    SELECT
+	firstname,
+	REVERSE(firstname) as "REVERSEA",
+	REVERSE(REVERSE(firstname)) as "REVERSEB"
+	FROM HR.EMPLOYEES;
+    ```
     
 - **`LENGTH`**  
   String'in uzunluğunu döndürür.
@@ -577,7 +656,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 	 `XPATH`
 	  XPATH, XML verileri üzerinde sorgulama yapar.
 	
-	   ```sql
+	 ```sql
 	   DROP TABLE IF EXISTS orders;
 	  
 	   CREATE TABLE orders (
@@ -596,7 +675,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 	       xpath('//item/text()', order_data) AS item_name,
 	       xpath('//price/text()', order_data) AS item_price
 	   FROM orders;
-	   ```
+	 ```
 
 - **`UUID`**  
   Evrensel benzersiz tanımlayıcı.  
@@ -609,7 +688,12 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   
 ### Veri Yapıları ve İndeksler
 - **`INDEX`**  
-  Veritabanı sorgularının hızını artırmak için kullanılır.  
+  Veritabanı sorgularının hızını artırmak için kullanılır.
+  
+     ```sql
+     CREATE INDEX idx_employee_name ON HR.EMPLOYEES (name);
+     ```
+     
 - **`BTREE`**  
   Varsayılan indeks türüdür ve verileri sıralı olarak tutar.
   
@@ -955,6 +1039,37 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
    ```sql
    SELECT MAKE_DATE(2024, 7, 6) AS ConstructedDate;
    ```
+   
+- **`EXTRACT`**
+  Tarih veya zaman değerinden belirli bir bileşeni (örneğin yıl, ay, gün) çıkarmak için kullanılan bir fonksiyondur.
+  
+  ```sql
+  SELECT EXTRACT(YEAR FROM TIMESTAMP '2023-06-27 15:30:00');
+  SELECT EXTRACT(MONTH FROM TIMESTAMP '2023-06-27 15:30:00');
+  SELECT EXTRACT(DAY FROM TIMESTAMP '2023-06-27 15:30:00');
+  SELECT EXTRACT(QUARTER FROM TIMESTAMP '2023-06-27 15:30:00');
+  SELECT EXTRACT(WEEK FROM TIMESTAMP '2023-06-27 15:30:00');
+
+  SELECT
+  orderid,
+  orderdate,
+  EXTRACT(YEAR FROM orderdate) as Yillar,
+  EXTRACT(MONTH FROM orderdate) as Aylar,
+  EXTRACT(DAY FROM orderdate) as Gunler,
+  EXTRACT(QUARTER FROM orderdate) as Ceyrekler,
+  EXTRACT(WEEK FROM orderdate) as Haftalar
+  FROM Sales.Orders;
+  ```
+  
+- **`INTERVAL`**
+  Tarih veya zaman değerinden belirli bir bileşeni (örneğin yıl, ay, gün) çıkarmak için kullanılan bir fonksiyondur.
+  
+  ```sql
+  SELECT
+  DATE_TRUNC('month', Now()) as Tarih,
+  (DATE_TRUNC('month', Now()) + INTERVAL '1 month')::date AS TarihB,
+  (DATE_TRUNC('month', Now()) + INTERVAL '1 month - 1 day')::date AS end_of_month;
+  ``` 
 
 ## 7. Performans ve Kilitleme
 
@@ -1016,7 +1131,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Veritabanındaki tablolar ve indeksler hakkında bilgi verir.
   
    ```sql
-      SELECT *
+   SELECT *
    FROM pg_tables
    ORDER BY schemaname;
   ```
@@ -1089,7 +1204,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
    ```sql
     ```
    
-  - **`STORED PROCEDURE`**  
+- **`STORED PROCEDURE`**  
   Saklı prosedürler oluşturur. SQL kodlarını saklı prosedürlerde tutarak yeniden kullanılabilir.
 
    ```sql
@@ -1289,7 +1404,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 	```
 
 ### OPERATORLER
-- **`+`, `-`, `*`, `/`, `%`, `||`**  
+- **`+`, `-`, `*`, `/`, `%`, `||`, `~*` **  
   Aritmetik ve string operatörleri sağlar.
   
 	```sql
@@ -1300,7 +1415,6 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 	FROM Sales.Customers
 	WHERE region = 'SP';
 	
-	--
 	
 	SELECT
 	custid,
@@ -1309,7 +1423,6 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 	FROM Sales.Customers
 	WHERE region != 'SP';
 	
-	--
 	
 	SELECT
 	custid,
@@ -1350,6 +1463,10 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 	region
 	FROM Sales.Customers
 	WHERE region is NOT Null;
+
+	SELECT empid, lastname
+	FROM HR.EMPLOYEES
+	WHERE lastname ~* '^[abc]';
 	```
 
 ### COLLATE
