@@ -408,18 +408,43 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   SELECT regexp_split_to_table('Lorem ipsum dolor sit amet', '\s+') AS word;
   SELECT regexp_split_to_table('Lorem ipsum dolor sit amet', ' ') AS word;
   ```
-     
-- **`ARRAY_AGG`**  
-  Satırlardan bir dizi oluşturur.
-  
-   ```sql
-  ```
    
 - **`ARRAY_LENGTH`**  
   Dizinin uzunluğunu döndürür.
   
  ```sql
  ```
+
+- **`ARRAY` ve `ARRAY_AGG`**  
+  Dizileri işlemek ve birleştirmek için kullanılır.
+  
+   ```sql
+   ```
+    
+- **`REGEXP_SPLIT_TO_TABLE`**  
+  Düzenli ifadeler kullanarak bir string'i tabloya böler. Her bir elemanı bir satır olarak döndürür.
+  
+   ```sql
+   SELECT regexp_split_to_table('USA,Canada', ',') AS Ulkeler;
+   ```
+   
+- **`UNNEST`**  
+  Bir diziyi satırlarına ayırır. Örneğin, `UNNEST(ARRAY[1, 2, 3])` ifadesi her bir dizi elemanını bir satıra dönüştürür.
+  
+   ```sql
+   SELECT 
+       CategoryId, 
+       Name, 
+       UNNEST(Aciklama, ',') AS SonucA
+   FROM 
+       CategoryTest;
+  ```
+   
+- **`ARRAY_LENGTH`**  
+  Bir dizinin uzunluğunu döndürür. Örneğin, `ARRAY_LENGTH(ARRAY[1, 2, 3], 1)` ifadesi `3` döndürür.
+  
+	   ```sql
+	   ```  
 
 ## 4. Veri Türleri ve Yapılar
 
@@ -930,60 +955,8 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
    ```sql
    SELECT MAKE_DATE(2024, 7, 6) AS ConstructedDate;
    ```
-   
-## 7. Dizi ve Matris İşlemleri
 
-- **`ARRAY` ve `ARRAY_AGG`**  
-  Dizileri işlemek ve birleştirmek için kullanılır.
-  
-   ```sql
-   ```
-   
-  - **`STRING_TO_ARRAY`**  
-  Bir string'i diziye dönüştürür. Örneğin, `STRING_TO_ARRAY('a,b,c', ',')` ifadesi `['a', 'b', 'c']` dizisini oluşturur.
-
-   ```sql
-   SELECT STRING_TO_ARRAY('USA,Canada', ',') AS Ulkeler;
-   ```
-   
-- **`REGEXP_SPLIT_TO_ARRAY`**  
-  Düzenli ifadeler kullanarak bir string'i diziye böler. Örneğin, `REGEXP_SPLIT_TO_ARRAY('a1b2c3', '[0-9]')` ifadesi `['a', 'b', 'c']` dizisini oluşturur.
-  
-    ```sql
-     ```
-    
-- **`REGEXP_SPLIT_TO_TABLE`**  
-  Düzenli ifadeler kullanarak bir string'i tabloya böler. Her bir elemanı bir satır olarak döndürür.
-  
-   ```sql
-   SELECT regexp_split_to_table('USA,Canada', ',') AS Ulkeler;
-   ```
-   
-- **`ARRAY_AGG`**  
-  Satırları bir diziye dönüştürür. Örneğin, `ARRAY_AGG(column_name)` ifadesi belirli bir sütundaki tüm değerleri bir diziye toplar.
-  
-   ```sql
-   ```
-   
-- **`UNNEST`**  
-  Bir diziyi satırlarına ayırır. Örneğin, `UNNEST(ARRAY[1, 2, 3])` ifadesi her bir dizi elemanını bir satıra dönüştürür.
-  
-   ```sql
-   SELECT 
-       CategoryId, 
-       Name, 
-       UNNEST(Aciklama, ',') AS SonucA
-   FROM 
-       CategoryTest;
-  ```
-   
-- **`ARRAY_LENGTH`**  
-  Bir dizinin uzunluğunu döndürür. Örneğin, `ARRAY_LENGTH(ARRAY[1, 2, 3], 1)` ifadesi `3` döndürür.
-  
-	   ```sql
-	   ```
-  
-## 8. Performans ve Kilitleme
+## 7. Performans ve Kilitleme
 
 ### Kilitleme Seçenekleri
 - **`WITH (NOLOCK)`**  
@@ -1033,7 +1006,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
    
 	   COMMIT;
  	 ```
-## 9. Veritabanı Yönetimi ve Bilgi
+## 8. Veritabanı Yönetimi ve Bilgi
 
 ### Veri Görüntüleme
 - **`pg_stat_activity`, `pg_stat_database`**  
@@ -1298,7 +1271,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 		
 		SELECT * FROM EmployeeRapor('UK');
 	```
-## 10. Ek Konular
+## 9. Ek Konular
 
 ### NULLS FIRST, NULLS LAST
 - **`NULLS FIRST`, `NULLS LAST`**  
