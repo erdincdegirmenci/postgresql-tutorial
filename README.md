@@ -206,33 +206,33 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Verilerin hangi noktadan itibaren döndürülmeye başlanacağını belirtir. Bu, büyük veri setleriyle çalışırken verilerin sayısını kontrol etmek için kullanılır.
   
 	 ```sql
-		   SELECT orderid, orderdate, custid, empid
-		   FROM Sales.Orders
-		   ORDER BY orderdate, orderid
-		   Limit 5 OFFSET 3;
+	SELECT orderid, orderdate, custid, empid
+	FROM Sales.Orders
+	ORDER BY orderdate, orderid
+	Limit 5 OFFSET 3;
 	 ```
 
 	```sql
-		   SELECT orderid, orderdate, custid, empid
-		   FROM Sales.Orders
-		   ORDER BY orderdate, orderid
-		   FETCH FIRST 1 ROW ONLY;
+	SELECT orderid, orderdate, custid, empid
+	FROM Sales.Orders
+	ORDER BY orderdate, orderid
+	FETCH FIRST 1 ROW ONLY;
 	```
  
 	```sql
-		   SELECT orderid, orderdate, custid, empid
-		   FROM Sales.Orders
-		   ORDER BY orderdate, orderid
-		   OFFSET 3 ROWS FETCH NEXT 5 ROW ONLY;
+	SELECT orderid, orderdate, custid, empid
+	FROM Sales.Orders
+	ORDER BY orderdate, orderid
+	OFFSET 3 ROWS FETCH NEXT 5 ROW ONLY;
 	 ```
 
   	```sql
-		   SELECT orderid, orderdate, custid, empid
-		   FROM Sales.Orders
-		   ORDER BY orderdate DESC
-		   FETCH NEXT 2 ROWS WITH TIES
-		   OFFSET 8;
-	 ```
+	SELECT orderid, orderdate, custid, empid
+	FROM Sales.Orders
+	ORDER BY orderdate DESC
+	FETCH NEXT 2 ROWS WITH TIES
+	OFFSET 8;
+	```
 ## 3. Veri Manipülasyonu ve Fonksiyonlar
 
 ### Aritmetik Fonksiyonlar
@@ -241,10 +241,10 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   `ROUND` ve `CEIL` sayıları yuvarlamak için kullanılır.
   
   ```sql
-   SELECT SUM(freight) as TotalFreight  FROM Sales.Orders
-   SELECT Count(*)*0.01 FROM Sales.Orders
-   SELECT CEIL(Count(*)*0.01) FROM Sales.Orders  
-   SELECT Round(Count(*)*0.01) FROM Sales.Orders
+  SELECT SUM(freight) as TotalFreight  FROM Sales.Orders
+  SELECT Count(*)*0.01 FROM Sales.Orders
+  SELECT CEIL(Count(*)*0.01) FROM Sales.Orders  
+  SELECT Round(Count(*)*0.01) FROM Sales.Orders
   ```
   
 ### String Fonksiyonları
@@ -252,40 +252,42 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   `CONCAT` String'leri birleştirir.
   
   ```sql
-   SELECT
-   CONCAT(city, ' ', Region, ' ', Country) As LocationC
-   FROM HR.Employees;
+  SELECT
+  CONCAT(city, ' ', Region, ' ', Country) As LocationC
+  FROM HR.Employees;
   ```
   
   `CONCAT_WS` bir ayırıcı kullanarak string'leri birleştirir.
   
     ```sql
-     SELECT 
-     CONCAT_WS(',', country, region, city )  AS locationC
-     FROM Sales.Customers;
-   ```
+    SELECT 
+    CONCAT_WS(',', country, region, city )  AS locationC
+    FROM Sales.Customers;
+    ```
     
 - **`SUBSTRING`**  
   String'in bir kısmını almak için kullanılır.
   
    ```sql
-     SELECT 
-    'erdinc.degirmenci@outlook.com'
-    ,POSITION('@' IN 'erdinc.degirmenci@outlook.com')
-    ,SUBSTRING('erdinc.degirmenci@outlook.com',1, 11-1)
-    ,SUBSTRING('erdinc.degirmenci@outlook.com',1, POSITION('@' IN 'erdinc.degirmenci@outlook.com')-1);
+   SELECT 
+   erdinc.degirmenci@outlook.com'
+   ,POSITION('@' IN 'erdinc.degirmenci@outlook.com')
+   ,SUBSTRING('erdinc.degirmenci@outlook.com',1, 11-1)
+   ,SUBSTRING('erdinc.degirmenci@outlook.com',1, POSITION('@' IN 'erdinc.degirmenci@outlook.com')-1);
    ```
    
 - **`POSITION`**  
   Bir substring'in, ana string içindeki konumunu bulur.
+  
    ```sql
    SELECT POSITION(' ' IN 'Erdinç DEĞİRMENCİ TR');
    SELECT POSITION('TR' IN 'Erdinç DEĞİRMENCİ TR');
   ```
+   
 - **`UPPER`, `LOWER`**  
   String'i büyük harfe veya küçük harfe dönüştürür.
   
-     ```sql
+   ```sql
    SELECT UPPER('amazing SQLData');   
    SELECT LOWER('amazing SQLData');
   ```
@@ -300,8 +302,8 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   String'in uzunluğunu döndürür.
   
   ```sql
-   SELECT LENGTH(N'abcde');
-   SELECT LENGTH('abcde');
+  SELECT LENGTH(N'abcde');
+  SELECT LENGTH('abcde');
   ```
   
 - **`INITCAP`**  
@@ -316,11 +318,11 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   String'in sağından, solundan veya her iki tarafından boşlukları temizler.
   
   ```sql
-   SELECT ltrim('      Hello   World      ');			--Sonuc :  "Hello   World      "
-   SELECT rtrim('      Hello   World      ');			--Sonuc :  "      Hello   World"
-   SELECT rtrim(ltrim('      Hello   World      '));	--Sonuc :  "Hello   World"
-   SELECT trim('      Hello   World      ');			--Sonuc :  "Hello   World"
-   SELECT btrim('      Hello   World      ');			--Sonuc :  "Hello   World"
+  SELECT ltrim('      Hello   World      ');			--Sonuc :  "Hello   World      "
+  SELECT rtrim('      Hello   World      ');			--Sonuc :  "      Hello   World"
+  SELECT rtrim(ltrim('      Hello   World      '));	--Sonuc :  "Hello   World"
+  SELECT trim('      Hello   World      ');			--Sonuc :  "Hello   World"
+  SELECT btrim('      Hello   World      ');			--Sonuc :  "Hello   World"
   ```
   
 - **`LPAD`, `RPAD`**  
@@ -342,8 +344,8 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   String içindeki belirli karakterleri veya kelimeleri değiştirir.
   
   ```sql
-   SELECT REPLACE('PostgreSQL SELECT Data', 'data', 'Veri');
-   SELECT REPLACE('PostgreSQL SELECT Data', 'Data', 'Veri');
+  SELECT REPLACE('PostgreSQL SELECT Data', 'data', 'Veri');
+  SELECT REPLACE('PostgreSQL SELECT Data', 'Data', 'Veri');
   ```
   
 - **`REGEXP_MATCHES`, `REGEXP_REPLACE`**  
@@ -381,30 +383,30 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 - **`FORMAT`**  
   String'i belirli bir formatta döndürür.
   
-    ```sql
-   SELECT FORMAT('Hello %s', 'World');
-   SELECT FORMAT('Testing %s, %s, %s, %%', 'one', 'two', 'three');
-   SELECT FORMAT('INSERT INTO %I VALUES(%L)', 'Foo bar', 'Reilly');
+  ```sql
+  SELECT FORMAT('Hello %s', 'World');
+  SELECT FORMAT('Testing %s, %s, %s, %%', 'one', 'two', 'three');
+  SELECT FORMAT('INSERT INTO %I VALUES(%L)', 'Foo bar', 'Reilly');
   ```
 
 ### Dizi Fonksiyonları
 - **`STRING_TO_ARRAY`**  
   String'i bir diziye dönüştürür.
   
-   ```sql
-   SELECT STRING_TO_ARRAY('Lorem ipsum dolor sit amet', ' ') AS words;
+  ```sql
+  SELECT STRING_TO_ARRAY('Lorem ipsum dolor sit amet', ' ') AS words;
   ```
    
 - **`REGEXP_SPLIT_TO_ARRAY`, `REGEXP_SPLIT_TO_TABLE`**  
   String'i düzenli ifadeler kullanarak diziye veya tabloya böler.
   
-     ```sql
-   SELECT regexp_split_to_array('Lorem ipsum dolor sit amet', '\s+') AS words;
+  ```sql
+  SELECT regexp_split_to_array('Lorem ipsum dolor sit amet', '\s+') AS words;
   ```
      
-     ```sql
-     SELECT regexp_split_to_table('Lorem ipsum dolor sit amet', '\s+') AS word;
-   SELECT regexp_split_to_table('Lorem ipsum dolor sit amet', ' ') AS word;
+  ```sql
+  SELECT regexp_split_to_table('Lorem ipsum dolor sit amet', '\s+') AS word;
+  SELECT regexp_split_to_table('Lorem ipsum dolor sit amet', ' ') AS word;
   ```
      
 - **`ARRAY_AGG`**  
@@ -433,116 +435,115 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 - **`JSON`, `JSONB`**  
   JSON verilerini saklar. `JSONB` daha verimli bir depolama sağlar.
   
-     ```sql
-   SELECT
-   	title,
-   	book_info -> 'publisher' as "publisher",
-   	book_info -> 'Kagit_Baski_Fiyati' as "KagitBaski",
-   	book_info -> 'Digital_Baski_Fiyati' as "DigitalBaski"
-   FROM Table_hstore;
+  ```sql
+  SELECT
+  title,
+  book_info -> 'publisher' as "publisher",
+  book_info -> 'Kagit_Baski_Fiyati' as "KagitBaski",
+  book_info -> 'Digital_Baski_Fiyati' as "DigitalBaski"
+  FROM Table_hstore;
    
-   -- JSON  Data Type
-   DROP TABLE IF EXISTS Table_json;
+  -- JSON  Data Type
+  DROP TABLE IF EXISTS Table_json;
    
-   CREATE TABLE Table_json
-   (
-   	id Serial Primary Key,
-   	docs JSON
-   );
+  CREATE TABLE Table_json
+  (
+  id Serial Primary Key,
+  docs JSON
+  );
    
-   INSERT INTO Table_json(docs)
-   Values
-   		('[1,2,3,4,5,6]'),
-   		('[2,3,4,5,6,7]'),
-   		('{"key":"value"}');
+  INSERT INTO Table_json(docs)
+  Values
+  ('[1,2,3,4,5,6]'),
+  ('[2,3,4,5,6,7]'),
+  ('{"key":"value"}');
+
+  SELECT *
+  FROM Table_json;
    
-   SELECT *
-   FROM Table_json;
-   
-   SELECT docs
-   FROM Table_json;
-     ```
+  SELECT docs
+  FROM Table_json;
+  ```
      
-   ```sql
-   ALTER TABLE table_json
-   ALTER COLUMN docs TYPE JSONB;
+  ```sql
+  ALTER TABLE table_json
+  ALTER COLUMN docs TYPE JSONB;
    
-   SELECT *
-   FROM Table_json
-   WHERE docs @> '2';
+  SELECT *
+  FROM Table_json
+  WHERE docs @> '2';
   ```
    
 - **`ARRAY`**  
   Birden fazla değeri bir veri türünde saklar.
   
-   ```sql
-   -- ARRAY Data Type
-   DROP TABLE IF EXISTS table_array;
+  ```sql
+  -- ARRAY Data Type
+  DROP TABLE IF EXISTS table_array;
    
-   CREATE TABLE table_array
-   (
-   	id Serial Primary Key,
-   	firstname Varchar(30),
-   	phone text[]
-   );
+  CREATE TABLE table_array
+  (
+  id Serial Primary Key,
+  firstname Varchar(30),
+  phone text[]
+  );
    
-   INSERT INTO table_array(firstname,phone) 
-   Values
-   		('Ali',Array['05559988876','00905559988876']),
-   		('Radi',Array['05359988899','00905359988899']);
-   
-   INSERT INTO table_array(firstname,phone) 
-   Values
-   		('Yaren',Array['05332244459','00905551234569']);
-   
-   SELECT *
-   FROM table_array;
-   
-   SELECT
-   		firstname,
-   		phone,
-   		phone[1] as Telno1,
-   		phone[2] as Telno2
-   FROM table_array;
+  INSERT INTO table_array(firstname,phone) 
+  Values
+  ('Ali',Array['05559988876','00905559988876']),
+  ('Radi',Array['05359988899','00905359988899']);
+  
+  INSERT INTO table_array(firstname,phone) 
+  Values
+  ('Yaren',Array['05332244459','00905551234569']);
+  
+  SELECT *
+  FROM table_array;
+  
+  SELECT
+  firstname,
+  phone,
+  phone[1] as Telno1,
+  phone[2] as Telno2
+  FROM table_array;
   ```
    
 - **`HSTORE`**  
   Anahtar-değer çiftlerini saklar.
   
     ```sql
-     CREATE Extension IF NOT EXISTS hstore;
+    CREATE Extension IF NOT EXISTS hstore;
        
-     CREATE TABLE Table_hstore
-      (
-      	id Serial Primary Key,
-      	title Varchar(50) NOT Null,
-      	book_info hstore
-      );
+    CREATE TABLE Table_hstore
+    (
+    id Serial Primary Key,
+    title Varchar(50) NOT Null,
+    book_info hstore
+    );
       
-      INSERT INTO Table_hstore(title, book_info)
-      Values
-      (
-      	'Uzay Kesifi',
-      	'
-      	"publisher" => "ABC publisher",
-      	"Kagit_Baski_Fiyati" => "1000",
-      	"Digital_Baski_Fiyati" => "200"
-      	'
-      );
+    INSERT INTO Table_hstore(title, book_info)
+    Values
+    (
+    'Uzay Kesifi',
+    '
+    "publisher" => "ABC publisher",
+    "Kagit_Baski_Fiyati" => "1000",
+    "Digital_Baski_Fiyati" => "200"
+    '
+    );
       
-      INSERT INTO Table_hstore(title, book_info)
-      Values
-      (
-      	'Universes',
-      	'
-      	"publisher" => "Ali publisher",
-      	"Kagit_Baski_Fiyati" => "2000",
-      	"Digital_Baski_Fiyati" => "1200"
-      	'
-      );
+    INSERT INTO Table_hstore(title, book_info)
+    Values
+    (
+    'Universes',
+    '
+    "publisher" => "Ali publisher",
+    "Kagit_Baski_Fiyati" => "2000",
+    "Digital_Baski_Fiyati" => "1200"
+    '
+    );
       
-      SELECT *
-      FROM Table_hstore;
+    SELECT * FROM Table_hstore;
     ```
     
 - **`XML`, ``**  
@@ -552,18 +553,17 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   XPATH, XML verileri üzerinde sorgulama yapar.
 
    ```sql
-    DROP TABLE IF EXISTS orders;
-   
-	   CREATE TABLE orders (
+   DROP TABLE IF EXISTS orders;
+  
+   CREATE TABLE orders (
 	       order_id SERIAL PRIMARY KEY,
 	       order_data XML
 	   );
 	   
-	   -- Inserting a sample XML data
-	   INSERT INTO orders (order_data) VALUES ('<order><item>Widget</item><price>25.00</price></order>');
+    -- Inserting a sample XML data
+     INSERT INTO orders (order_data) VALUES ('<order><item>Widget</item><price>25.00</price></order>');
 	   
-	   SELECT *
-	   FROM Orders;
+     SELECT *FROM Orders;
    ```
 
    ```sql
@@ -571,7 +571,8 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
        xpath('//item/text()', order_data) AS item_name,
        xpath('//price/text()', order_data) AS item_price
    FROM orders;
-    ```
+   ```
+
 - **`UUID`**  
   Evrensel benzersiz tanımlayıcı.  
 - **`BYTEA`**  
@@ -586,6 +587,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Veritabanı sorgularının hızını artırmak için kullanılır.  
 - **`BTREE`**  
   Varsayılan indeks türüdür ve verileri sıralı olarak tutar.
+  
      ```sql
    DROP INDEX table_json_docs_idx;
    -- CREATE INDEX On table_json Using GIN(docs jsonb_path_ops);
@@ -594,20 +596,22 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
    SELECT *
    FROM Table_json
    WHERE docs @> '2';
-    ```
+   ```
+     
 - **`HASH`**  
   Hash tabanlı indeksler sağlar.  
 - **`GIN`**  
   JSONB ve diğer koleksiyon türleri için kullanılır.
+  
    ```sql
-         DROP INDEX table_json_docs_idx;
-         -- CREATE INDEX On table_json Using GIN(docs jsonb_path_ops);
-         CREATE INDEX table_json_docs_idx On table_json Using GIN(docs jsonb_path_ops);
-      
-      SELECT *
-      FROM Table_json
-      WHERE docs @> '2';
-   ```
+  DROP INDEX table_json_docs_idx;
+  -- CREATE INDEX On table_json Using GIN(docs jsonb_path_ops);
+  CREATE INDEX table_json_docs_idx On table_json Using GIN(docs jsonb_path_ops);
+  
+  SELECT *
+  FROM Table_json
+  WHERE docs @> '2';
+  ```
 
 - **`GiST`**  
   Coğrafi ve diğer yapılandırılmış veriler için kullanılır.
@@ -632,7 +636,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 - **`TABLE`**  
   Verileri düzenlemek için kullanılır.
   
-     ```sql
+    ```sql
    CREATE SCHEMA ornek;
    
    CREATE TABLE Ornek.Siparis
@@ -643,26 +647,25 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
    	orderdate Date,
    	Sehir Varchar(50)
    );
-     SELECT *
-   FROM Ornek.Siparis;
-    ```
+  SELECT * FROM Ornek.Siparis;
+   ```
      
 - **`VIEW`**  
   Sanal tablo oluşturur.
   
   ```sql
-         CREATE View Ali.vwRapor1 as
-         SELECT 
-         			orderid,
-         			orderdate,
-         			custid,
-         			empid,
-         			Row_Number() Over(ORDER BY orderdate desc)
-         FROM Sales.Orders;
+  CREATE View Ali.vwRapor1 as
+  SELECT 
+  orderid,
+  orderdate,
+  custid,
+  empid,
+  Row_Number() Over(ORDER BY orderdate desc)
+  FROM Sales.Orders;
   
-   SELECT *
-   	FROM Ali.vwRapor1
-    ```
+  SELECT *
+  FROM Ali.vwRapor1
+  ```
   
 - **`SEQUENCE`**  
   Otomatik artan değerler üretir.
@@ -677,49 +680,49 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Geçici sonuçlar oluşturur ve sorguların daha okunabilir olmasını sağlar.
   
     ```sql
-      WITH
-      Rapor as
-      (
-      	SELECT
-      			empid,
-      			firstname,
-      			lastname,
-      			country,
-      			Row_Number() Over(Partition By country ORDER BY country, firstname) as SiraNo
-      	FROM HR.employees	
-      )
-      SELECT *
-      FROM Rapor
-      WHERE sirano = 1;
+    WITH
+    Rapor as
+    (
+    SELECT
+    empid,
+    firstname,
+    lastname,
+    country,
+    Row_Number() Over(Partition By country ORDER BY country, firstname) as SiraNo
+    FROM HR.employees	
+    )
+    SELECT *
+    FROM Rapor
+    WHERE sirano = 1;
 
     ```
     
     ```sql
     WITH
-      A as
-      (
-      	SELECT
-      			EXTRACT(Year FROM Orderdate)as Yillar,	
-      			EXTRACT(Month FROM Orderdate)as Aylar,	
-      			SUM(Freight) as ToplamFreight
-      	FROM Sales.Orders
-      	GROUP BY
-      			EXTRACT(Year FROM Orderdate),
-      			EXTRACT(Month FROM Orderdate)
-      ),
-      B as
-      (
-      	SELECT
-      			yillar,
-      			aylar,
-      			toplamfreight,
-      			Row_Number() Over(Partition By yillar ORDER BY toplamfreight desc) as SiraNo
-      	FROM A	
-      )
-      SELECT *
-      FROM B
-      WHERE SiraNo <= 3
-      ORDER BY Yillar;
+    A as
+    (
+    SELECT
+    EXTRACT(Year FROM Orderdate)as Yillar,	
+    EXTRACT(Month FROM Orderdate)as Aylar,	
+    SUM(Freight) as ToplamFreight
+    FROM Sales.Orders
+    GROUP BY
+    EXTRACT(Year FROM Orderdate),
+    EXTRACT(Month FROM Orderdate)
+    ),
+    B as
+    (
+    SELECT
+    yillar,
+    aylar,
+    toplamfreight,
+    Row_Number() Over(Partition By yillar ORDER BY toplamfreight desc) as SiraNo
+    FROM A	
+    )
+    SELECT *
+    FROM B
+    WHERE SiraNo <= 3
+    ORDER BY Yillar;
     ```
 
 ### ROW_NUMBER
