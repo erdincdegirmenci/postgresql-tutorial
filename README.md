@@ -1,5 +1,57 @@
 # PostgreSQL Kapsamlı Kılavuzu
 
+## İçindekiler
+
+1. [Temel SQL İşlemleri](#1-temel-sql-işlemleri)
+   - [SELECT](#select)
+   - [INSERT, UPDATE, DELETE](#insert-update-delete)
+   - [JOIN](#join)
+2. [Filtreleme ve Sıralama](#2-filtreleme-ve-sıralama)
+   - [WHERE](#where)
+   - [GROUP BY](#group-by)
+   - [ORDER BY](#order-by)
+   - [HAVING](#having)
+   - [BETWEEN](#between)
+   - [LIMIT ve OFFSET-FETCH](#limit-ve-offset-fetch)
+3. [Veri Manipülasyonu ve Fonksiyonlar](#3-veri-manipülasyonu-ve-fonksiyonlar)
+   - [Aritmetik Fonksiyonlar](#aritmetik-fonksiyonlar)
+   - [String Fonksiyonları](#string-fonksiyonları)
+   - [Dizi Fonksiyonları](#dizi-fonksiyonları)
+4. [Veri Türleri ve Yapılar](#4-veri-türleri-ve-yapılar)
+   - [Temel Veri Türleri](#temel-veri-türleri)
+   - [İleri Düzey Veri Türleri](#ileri-düzey-veri-türleri)
+   - [Veri Yapıları ve İndeksler](#veri-yapıları-ve-indeksler)
+   - [Diğer Yapılar](#diğer-yapılar)
+5. [İleri Düzey Fonksiyonlar ve İşlemler](#5-ileri-düzey-fonksiyonlar-ve-i̇şlemler)
+   - [CTES (Common Table Expressions)](#ctes-common-table-expressions)
+   - [ROW_NUMBER](#row_number)
+   - [PARTITION](#partition)
+   - [CASE](#case)
+   - [COALESCE](#coalesce)
+   - [STRING_AGG](#string_agg)
+6. [XML / XPATH](#6-xml-xpath)
+   - [XML](#xml)
+   - [XPATH](#xpath)
+7. [Tarih ve Zaman Fonksiyonları](#7-tarih-ve-zaman-fonksiyonları)
+   - [DATE Fonksiyonları](#date-fonksiyonları)
+8. [Dizi ve Matris İşlemleri](#8-dizi-ve-matris-i̇şlemleri)
+9. [Performans ve Kilitleme](#9-performans-ve-kilitleme)
+   - [Kilitleme Seçenekleri](#kilitleme-seçenekleri)
+   - [Transaction Isolation Level](#transaction-isolation-level)
+10. [Veritabanı Yönetimi ve Bilgi](#10-veritabanı-yönetimi-ve-bilgi)
+    - [Veri Görüntüleme](#veri-görüntüleme)
+    - [Veritabanı Bilgisi](#veritabanı-bilgisi)
+    - [Kümeleme ve Birleştirme](#kümeleme-ve-birleştirme)
+    - [Diğer İşlemler](#diğer-i̇şlemler)
+11. [Ek Konular](#11-ek-konular)
+    - [NULLS FIRST, NULLS LAST](#nulls-first-null-s-last)
+    - [OPERATORLER](#operatorler)
+    - [COLLATE](#collate)
+    - [TABLESAMPLE](#tablesample)
+    - [ROW LEVEL SECURITY](#row-level-security)
+    - [TEMPORARY TABLES](#temporary-tables)
+    - [LISTAGG](#listagg)
+
 ## 1. Temel SQL İşlemleri
 
 ### SELECT
@@ -97,22 +149,20 @@
 ## 4. Veri Türleri ve Yapılar
 
 ### Temel Veri Türleri
-- **`INTEGER`, `BIGINT`, `SMALLINT`, `SERIAL`, `BIGSERIAL`**  
-  Tam sayı veri türleri.  
-- **`NUMERIC`, `DECIMAL`, `FLOAT`, `REAL`, `DOUBLE PRECISION`**  
-  Kesirli ve ondalıklı sayılar için veri türleri.  
-- **`CHAR`, `VARCHAR`, `TEXT`**  
-  Metin veri türleri.  
-- **`DATE`, `TIME`, `TIMESTAMP`, `INTERVAL`**  
-  Tarih ve zaman veri türleri.
+- **`INTEGER`, `FLOAT`, `VARCHAR`**  
+  Temel veri türleri, sayısal ve string veri saklamak için kullanılır.  
+- **`BOOLEAN`**  
+  Boolean veri türü, `TRUE` veya `FALSE` değerlerini saklar.  
+- **`CHAR`, `TEXT`**  
+  Tek karakter veya metin veri saklar.
 
 ### İleri Düzey Veri Türleri
-- **`ARRAY`**  
-  Birden fazla değeri tek bir veri türü olarak saklar.  
 - **`JSON`, `JSONB`**  
-  Yapısal veri saklamak için kullanılır; JSONB ikili formatta daha hızlı sorgulama sağlar.  
+  JSON verilerini saklar. `JSONB` daha verimli bir depolama sağlar.  
+- **`ARRAY`**  
+  Birden fazla değeri bir veri türünde saklar.  
 - **`HSTORE`**  
-  Anahtar-değer çiftlerini saklar.  
+  Anahtar-değer çiftlerini saklar.
 - **`XML`**  
   XML verisini saklamak için kullanılır.  
 - **`UUID`**  
@@ -125,6 +175,8 @@
   Coğrafi verileri saklamak için (PostGIS eklentisi ile).
 
 ### Veri Yapıları ve İndeksler
+- **`INDEX`**  
+  Veritabanı sorgularının hızını artırmak için kullanılır.  
 - **`BTREE`**  
   Varsayılan indeks türüdür ve verileri sıralı olarak tutar.  
 - **`HASH`**  
@@ -140,54 +192,55 @@
 
 ### Diğer Yapılar
 - **`TABLE`**  
-  Temel tablo yapısı.  
+  Verileri düzenlemek için kullanılır.  
 - **`VIEW`**  
-  Sanal tablo.  
-- **`MATERIALIZED VIEW`**  
-  Saklı sanal tablo, verileri fiziksel olarak saklar.  
-- **`INDEX`**  
-  Verileri hızlıca aramak için kullanılır.  
+  Sanal tablo oluşturur.  
 - **`SEQUENCE`**  
   Otomatik artan değerler üretir.
 
 ## 5. İleri Düzey Fonksiyonlar ve İşlemler
 
 ### CTES (Common Table Expressions)
-- **`CTES`**  
-  Geçici sonuç kümeleri oluşturmak için kullanılır. Karmaşık sorguları daha okunabilir hale getirir.
+- **`WITH`**  
+  Geçici sonuçlar oluşturur ve sorguların daha okunabilir olmasını sağlar.
 
 ### ROW_NUMBER
-- **`ROW_NUMBER`**  
-  Satırlara sıra numarası atar, genellikle pencere fonksiyonları ile birlikte kullanılır.
+- **`ROW_NUMBER()`**  
+  Her satıra bir sıra numarası atar.
 
 ### PARTITION
-- **`PARTITION`**  
-  Veri kümesini belirli bölgelere ayırarak daha etkili yönetim ve sorgulama sağlar.
+- **`PARTITION BY`**  
+  Verileri gruplara ayırarak pencere fonksiyonları uygulamanızı sağlar.
 
 ### CASE
 - **`CASE`**  
-  Koşullu mantık sağlar ve sorgu sonuçlarını belirli şartlara göre döndürebilir.
+  Koşullu mantık sağlar. Belirli koşullara göre değer döndürür.
 
 ### COALESCE
 - **`COALESCE`**  
-  NULL değerler yerine bir varsayılan değer döndürür.
+  NULL değerler yerine ilk geçerli değeri döndürür.
 
 ### STRING_AGG
 - **`STRING_AGG`**  
-  Birden fazla string'i tek bir string'e birleştirir ve belirli bir ayırıcı ile ayırır.
+  Birden fazla satırı tek bir string'e birleştirir.
 
 ## 6. XML / XPATH
-- **`XML`**  
- ## 6. XML / XPATH
-- **`XML`**  
-  XML verilerini saklamak ve işlemek için kullanılır. PostgreSQL, XML veri türleri ve fonksiyonları ile XML belgeleri üzerinde sorgulama ve manipülasyon yapmanızı sağlar.
 
+### XML
+- **`XML`**  
+  XML veri türlerini saklar ve işler.  
+- **`XMLTABLE`**  
+  XML verilerini tabloya dönüştürür.
+
+### XPATH
 - **`XPATH`**  
-  XML belgelerinde veri aramak ve sorgulamak için kullanılan bir dil. PostgreSQL, XML belgeleri üzerinde XPATH ifadeleri ile veri çekmenizi sağlar.
+  XML verileri üzerinde sorgular yapmanızı sağlar.
 
 ## 7. Tarih ve Zaman Fonksiyonları
 
 ### DATE Fonksiyonları
+- **`CURRENT_DATE`, `CURRENT_TIME`, `CURRENT_TIMESTAMP`**  
+  Tarih ve saat bilgilerini döndürür.
 - **`DATEADD`**  
   Tarihe belirli bir süre ekler. Örneğin, `DATEADD(day, 5, CURRENT_DATE)` ifadesi, bugünkü tarihe 5 gün ekler.
 
@@ -205,7 +258,9 @@
 
 ## 8. Dizi ve Matris İşlemleri
 
-- **`STRING_TO_ARRAY`**  
+- **`ARRAY` ve `ARRAY_AGG`**  
+  Dizileri işlemek ve birleştirmek için kullanılır.
+  - **`STRING_TO_ARRAY`**  
   Bir string'i diziye dönüştürür. Örneğin, `STRING_TO_ARRAY('a,b,c', ',')` ifadesi `['a', 'b', 'c']` dizisini oluşturur.
 
 - **`REGEXP_SPLIT_TO_ARRAY`**  
@@ -226,6 +281,7 @@
 ## 9. Performans ve Kilitleme
 
 ### Kilitleme Seçenekleri
+
 - **`WITH (NOLOCK)`**  
   Okuma işlemleri sırasında tablolarda kilitlenmeleri engeller ve okuma kilitlenmeleri olmadan veri okur.
 
@@ -236,24 +292,33 @@
   Kilitlenmiş satırlar varsa hata döndürür ve işlemi hemen durdurur.
 
 ### Transaction Isolation Level
+- **`SERIALIZABLE`, `REPEATABLE READ`**  
+  İşlemlerin izolasyon seviyelerini belirler.
+  
 - **`READ COMMITTED`**  
   İşlemlerin okuma seviyesini belirler ve diğer işlemler tarafından yapılan değişiklikleri okur. Bu seviyede yapılan sorgular, sadece commit edilmiş verileri döndürür.
 
 ## 10. Veritabanı Yönetimi ve Bilgi
 
 ### Veri Görüntüleme
-- **`SHOW datestyle;`**  
-  Tarih biçimini görüntüler. Veritabanında tarihlerin nasıl formatlandığını gösterir.
+- **`pg_stat_activity`, `pg_stat_database`**  
+  Veritabanı etkinliğini ve performansını görüntüler.
 
 ### Veritabanı Bilgisi
-- **`CATALOG`**  
+- **`pg_tables`, `pg_indexes`**  
+  Veritabanındaki tablolar ve indeksler hakkında bilgi verir.
+  - **`CATALOG`**  
   Veritabanı yapısını ve metadataları hakkında bilgi sağlar.
 
 - **`INFORMATION_SCHEMA`**  
   Veritabanının şeması hakkında bilgi sağlar; tablolar, sütunlar, veri türleri vb. hakkında bilgi alabilirsiniz.
 
+
 ### Kümeleme ve Birleştirme
-- **`INTERSECT`**  
+- **`CLUSTER`**  
+  Veritabanı tablosunu belirli bir indeksle sıralar.
+
+  - **`INTERSECT`**  
   İki sorgunun kesişim kümesini döndürür. Ortak olan satırları getirir.
 
 - **`UNION`**  
@@ -263,7 +328,9 @@
   Bir sorgunun diğer sorgunun sonucundan farklarını döndürür. İlk sorguda olup, ikinci sorguda olmayan satırları getirir.
 
 ### Diğer İşlemler
-- **`STORED PROCEDURE`**  
+- **`VACUUM`, `REINDEX`**  
+  Veritabanını temizler ve yeniden indeksler.
+  - **`STORED PROCEDURE`**  
   Saklı prosedürler oluşturur. SQL kodlarını saklı prosedürlerde tutarak yeniden kullanılabilir.
 
 - **`CALL`**  
@@ -283,7 +350,9 @@
 
 ## 11. Ek Konular
 
+
 ### NULLS FIRST, NULLS LAST
+
 - **`NULLS FIRST`**  
   NULL değerlerini sıralama işlemlerinde başa yerleştirir. Örneğin, sıralama işlemi sırasında NULL değerler ilk sırada gösterilir.
 
@@ -313,4 +382,6 @@
 ### LISTAGG
 - **`LISTAGG`**  
   Birden fazla satırdaki verileri birleştirir ve belirli bir ayırıcı ile bir string oluşturur. Örneğin, birden fazla satırdaki değerleri tek bir satırda birleştirmek için kullanılır.
+
+
 
