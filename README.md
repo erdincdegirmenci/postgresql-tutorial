@@ -982,16 +982,15 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   ```
      
 ### Transaction Isolation Level
+ İşlemlerin izolasyon seviyelerini belirler.
+	  
+```sql
+SHOW TRANSACTION ISOLATION LEVEL;
 
-İşlemlerin izolasyon seviyelerini belirler.
-  
-   ```sql
-   SHOW TRANSACTION ISOLATION LEVEL;
-	
-   SELECT *
-   FROM pg_settings
-   WHERE name = 'transaction_isolation';
-   ```
+SELECT *
+FROM pg_settings
+WHERE name = 'transaction_isolation';
+```
 
 - **`READ COMMITTED`**  
   İşlemlerin okuma seviyesini belirler ve diğer işlemler tarafından yapılan değişiklikleri okur. Bu seviyede yapılan sorgular, sadece commit edilmiş verileri döndürür.
