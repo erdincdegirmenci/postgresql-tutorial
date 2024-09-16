@@ -73,10 +73,10 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 - **`SELECT *` ve `SELECT empid, firstname, lastname, country`**  
   PostgreSQL'de verileri sorgulamak için kullanılan `SELECT` komutları, veritabanındaki tablo veya görünümlerden belirli sütunları veya tüm sütunları seçmenizi sağlar. `SELECT *` tüm sütunları seçerken, belirli sütunları belirttiğinizde sadece o sütunları getirir.
 
-### INSERT, UPDATE, DELETE
+### INSERT
 - **`INSERT`**  
   Yeni veri ekler.
-### UPDATE, DELETE
+### UPDATE
 - **`UPDATE`**  
   Mevcut verileri günceller.
 ### DELETE
