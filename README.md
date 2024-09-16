@@ -995,16 +995,16 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 - **`READ COMMITTED`**  
   İşlemlerin okuma seviyesini belirler ve diğer işlemler tarafından yapılan değişiklikleri okur. Bu seviyede yapılan sorgular, sadece commit edilmiş verileri döndürür.
   
- 	```sql
-     	BEGIN;
+ ```sql
+ BEGIN;
 
-   	SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+ SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
    
-   	-- Your SELECT statement
-  	 SELECT * FROM your_table;
-   
-	   COMMIT;
- 	 ```
+ -- Your SELECT statement
+ SELECT * FROM your_table;
+ 
+COMMIT;
+```
 ## 8. Veritabanı Yönetimi ve Bilgi
 
 ### Veri Görüntüleme
