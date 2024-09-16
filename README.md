@@ -54,6 +54,7 @@ Bu kılavuz, PostgreSQL Egzersizleri üzerindeki tüm soruları ve cevapları de
     - [TEMPORARY TABLES](#temporary-tables)
     - [LISTAGG](#listagg)
 
+***
 ### 1. Temel SQL İşlemleri
 
 ### SELECT
