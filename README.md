@@ -1,5 +1,9 @@
 # PostgreSQL Kapsamlı Kılavuzu
 
+PostgreSQL, açık kaynak kodlu, güçlü ve esnek bir ilişkisel veritabanı yönetim sistemidir. SQL standardını destekleyen ve geniş bir fonksiyon yelpazesine sahip olan PostgreSQL, veri yönetimi, sorgulama ve analiz konularında sağlam bir temel sağlar. Bu kılavuz, PostgreSQL'in temel ve ileri düzey özelliklerini kapsamlı bir şekilde ele alarak, veritabanı yönetimi konusunda derinlemesine bilgi edinmenize yardımcı olmayı amaçlamaktadır. Veritabanı işlemleri, veri manipülasyonu ve performans iyileştirme gibi konulara dair kapsamlı bilgilerle, PostgreSQL'in sunduğu imkanları en iyi şekilde kullanabilmeniz için gereken tüm detayları sunacaktır.
+
+Bu kılavuz, PostgreSQL Egzersizleri üzerindeki tüm soruları ve cevapları derlemektedir. Bu problemlerin gerçekten çözülmesi, sadece bu kılavuzu gözden geçirmekten daha ileriye gitmenizi sağlayacaktır, bu yüzden [PostgreSQL Exercises](https://pgexercises.com) ziyaret etmenizi öneririz.
+
 ## İçindekiler
 
 1. [Temel SQL İşlemleri](#1-temel-sql-işlemleri)
