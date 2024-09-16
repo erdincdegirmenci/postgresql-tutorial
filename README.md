@@ -76,6 +76,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 
 ```sql
 Select *  From HR.EMPLOYEES;
+Select empid, firstname, lastname, country From hr.employees
 ```
 
 ### INSERT
