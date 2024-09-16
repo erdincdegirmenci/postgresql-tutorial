@@ -6,7 +6,7 @@ Bu kılavuz, PostgreSQL Egzersizleri üzerindeki tüm soruları ve cevapları de
 
 ## İçindekiler
 
-[BAŞLANGIÇ](#getting-Started)
+[BAŞLANGIÇ](#baslangic)
 1. [Temel SQL İşlemleri](#1-temel-sql-işlemleri)
    - [SELECT](#select)
    - [INSERT, UPDATE, DELETE](#insert-update-delete)
@@ -56,7 +56,7 @@ Bu kılavuz, PostgreSQL Egzersizleri üzerindeki tüm soruları ve cevapları de
 
 ***
 
-## Getting Started
+## BAŞLANGIÇ
 
 Başlamak için öncelikle yapmanız gereken tek şey çalışmaları açmak, sorulara göz atmak ve cevaplamaya çalışmak!
 
