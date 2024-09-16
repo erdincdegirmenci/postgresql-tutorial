@@ -64,7 +64,7 @@ Bu çalışmalar için kullanılan veri setinin sadece çalışmaları desteklem
 
 Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sırası ile çalıştırınız.
 
-[Örnek Dosya](sqldata.sql)
+[Database](sqldata.sql)
 
 ### 1. Temel SQL İşlemleri
 
