@@ -551,11 +551,51 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   ```
    
 - **`ARRAY_LENGTH`**  
-  Bir dizinin uzunluğunu döndürür. Örneğin, `ARRAY_LENGTH(ARRAY[1, 2, 3], 1)` ifadesi `3` döndürür.
+  Bir dizinin uzunluğunu döndürür.
   
 	   ```sql
 	   ```  
-
+   
+- **`TO_CHAR`**  
+  Bu fonksiyon, tarih ve sayısal değerleri belirli bir formatta metin (string) olarak dönüştürmek için kullanılır.
+  
+ 	```sql
+	SELECT TO_CHAR(5559988876,'(999) 999 99 99') as PhoneNumber;
+	
+	SELECT
+	TO_CHAR(5559988876,'9 999 999 99 99') as Phone1,
+	TO_CHAR(5559988876,'0 000 000 00 00') as Phone2,
+	TO_CHAR(5559988876,'0 999 999 99 99') as Phone3,
+	TO_CHAR(5559988876,'0 (999) 999 99 99') as Phone4,
+	TO_CHAR(5559988876,'0 (000) 000 00 00') as Phone5,
+	'+90 ' || TO_CHAR(5559988876,'(999) 999 99 99') as Phone6;
+	```
+  - **`TO_NUMBER`**  
+  Bir dizeyi (string) veya diğer veri türlerini sayısal bir değere dönüştürmek için kullanılır. 
+  
+ 	```sql
+	SELECT
+		TO_NUMBER('1459.89', '9999.99'),
+		TO_NUMBER('1459.89', '9999D99'), -- Yukarıdaki ile aynı sonucu verir
+		TO_NUMBER('1459.89', '9999.9'),
+		TO_NUMBER('1459.89', '9999.'),
+		TO_NUMBER('1459.89', '9999');
+	
+	SELECT TO_NUMBER('14,596.89-', '99G999D99');
+	```
+  
+  - **`TO_DATE`**  
+  Tarih verileri ile çalışırken veri dönüşümleri yapmak için oldukça yararlıdır.
+  
+ 	```sql
+	SELECT
+		TO_DATE('2024-06-18','YYYY-MM-DD'),
+		TO_DATE('20240618','YYYYMMDD'),
+		TO_DATE('20241806','YYYYDDMM');
+	
+	SELECT TO_DATE('061899','MMDDYY');
+	```
+  
 ## 4. Veri Türleri ve Yapılar
 
 ### Temel Veri Türleri
