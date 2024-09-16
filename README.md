@@ -62,7 +62,7 @@ Bu kılavuz, PostgreSQL Egzersizleri üzerindeki tüm soruları ve cevapları de
 
 Başlamak için öncelikle yapmanız gereken tek şey çalışmaları açmak, sorulara göz atmak ve cevaplamaya çalışmak!
 
-Bu çalışmalar için kullanılan veri setinin sadece çalışmaları desteklemek için tasarlandığını ve veri tabanı şemasının bazı açılardan kusurlu olduğunu unutmayın; bu yüzden iyi bir tasarım örneği olarak değerlendirmeyin. 
+Bu çalışmalar için kullanılan veri setinin sadece çalışmaları desteklemek için tasarlandığını ve veri tabanı şemasının bazı açılardan kusurlu olduğunu unutmayın; bu yüzden iyi bir tasarım örneği olarak değerlENDirmeyin. 
 
 Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sırası ile çalıştırınız.
 
@@ -102,7 +102,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
  
 ### JOIN
 - **`JOIN`,`RIGHT JOIN`, `LEFT JOIN`, `CROSS JOIN`, `FULL JOIN`, `OUTER JOIN`**  
-  `JOIN` Birden fazla tabloyu ilişkilendirerek birleştirmenizi sağlar.
+  `JOIN` Birden fazla tabloyu ilişkilENDirerek birleştirmenizi sağlar.
   
   ```sql
   SELECT *
@@ -546,32 +546,32 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
     SELECT * FROM Table_hstore;
     ```
     
-- **`XML`, ``**  
+- **`XML`**  
   XML veri türü ile verileri saklar ve işler.
   
- `XPATH`
-  XPATH, XML verileri üzerinde sorgulama yapar.
-
-   ```sql
-   DROP TABLE IF EXISTS orders;
-  
-   CREATE TABLE orders (
-	       order_id SERIAL PRIMARY KEY,
-	       order_data XML
-	   );
-	   
-    -- Inserting a sample XML data
-     INSERT INTO orders (order_data) VALUES ('<order><item>Widget</item><price>25.00</price></order>');
-	   
-     SELECT *FROM Orders;
-   ```
-
-   ```sql
-   SELECT
-       xpath('//item/text()', order_data) AS item_name,
-       xpath('//price/text()', order_data) AS item_price
-   FROM orders;
-   ```
+	 `XPATH`
+	  XPATH, XML verileri üzerinde sorgulama yapar.
+	
+	   ```sql
+	   DROP TABLE IF EXISTS orders;
+	  
+	   CREATE TABLE orders (
+		       order_id SERIAL PRIMARY KEY,
+		       order_data XML
+		   );
+		   
+	    -- Inserting a sample XML data
+	     INSERT INTO orders (order_data) VALUES ('<order><item>Widget</item><price>25.00</price></order>');
+		   
+	     SELECT *FROM Orders;
+	   ```
+	
+	   ```sql
+	   SELECT
+	       xpath('//item/text()', order_data) AS item_name,
+	       xpath('//price/text()', order_data) AS item_price
+	   FROM orders;
+	   ```
 
 - **`UUID`**  
   Evrensel benzersiz tanımlayıcı.  
@@ -776,7 +776,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   	WHEN 1 THEN 'Denizyolu'
   	WHEN 2 THEN 'Havayolu'
   	WHEN 3 THEN 'Karayolu'
-  	End as SevkiyatTuru
+  	END as SevkiyatTuru
    FROM Sales.Orders;	
    ```
      
@@ -792,7 +792,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
      	WHEN shipperid = 1 THEN 'Denizyolu'
    	WHEN shipperid = 2 THEN 'Havayolu'
    	WHEN shipperid = 3 THEN 'Karayolu'
-   	End as SevkiyatTuru
+   	END as SevkiyatTuru
    FROM Sales.Orders;
    ```
      
@@ -816,7 +816,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 			WHEN 11 THEN 'Kasım'
 			WHEN 12 THEN 'Aralık'
 			Else 'Bilinmiyor'
-		End as AyAdi,	
+		END as AyAdi,	
 		Freight
    FROM Sales.Orders
    ORDER BY 1,2;
@@ -980,8 +980,8 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 - **`ARRAY_LENGTH`**  
   Bir dizinin uzunluğunu döndürür. Örneğin, `ARRAY_LENGTH(ARRAY[1, 2, 3], 1)` ifadesi `3` döndürür.
   
-  ```sql
-   ```
+	   ```sql
+	   ```
   
 ## 8. Performans ve Kilitleme
 
@@ -1012,34 +1012,36 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 
   İşlemlerin izolasyon seviyelerini belirler.
   
- ```sql
-      SHOW TRANSACTION ISOLATION LEVEL;
-      
-      SELECT *
-      FROM pg_settings
-      WHERE name = 'transaction_isolation';
-  ```
+   ```sql
+   SHOW TRANSACTION ISOLATION LEVEL;
+
+   SELECT *
+   FROM pg_settings
+   WHERE name = 'transaction_isolation';
+   ```
 
 - **`READ COMMITTED`**  
   İşlemlerin okuma seviyesini belirler ve diğer işlemler tarafından yapılan değişiklikleri okur. Bu seviyede yapılan sorgular, sadece commit edilmiş verileri döndürür.
   
- ```sql
-     BEGIN;
+ 	```sql
+     	BEGIN;
 
-   SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+   	SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
    
-   -- Your SELECT statement
-   SELECT * FROM your_table;
+   	-- Your SELECT statement
+  	 SELECT * FROM your_table;
    
-   COMMIT;
-  ```
+	   COMMIT;
+ 	 ```
 ## 9. Veritabanı Yönetimi ve Bilgi
 
 ### Veri Görüntüleme
 - **`pg_stat_activity`, `pg_stat_database`**  
   Veritabanı etkinliğini ve performansını görüntüler.
- ```sql
- ```
+  
+	 ```sql
+	 ```
+
 ### Veritabanı Bilgisi
 - **`pg_tables`, `pg_indexes`**  
   Veritabanındaki tablolar ve indeksler hakkında bilgi verir.
@@ -1143,23 +1145,23 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
       
       CREATE OR REPLACE PROCEDURE TRANSFER
       (
-         sender int,
+         sENDer int,
          receiver int, 
          amount dec
       )
       language plpgsql    
       as $$
-      begin
+      BEGIN
           update accounts 
           set balance = balance - amount 
-          where id = sender;
+          where id = sENDer;
       
           update accounts 
           set balance = balance + amount 
           where id = receiver;
       
           commit;
-      end;$$;
+      END;$$;
   ```
    
 - **`CALL`**  
@@ -1202,7 +1204,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
    FROM employees_trg_log;
    
    
-   -- CREATE the Trigger Function
+   -- CREATE the Trigger FUNCTION
    DROP FUNCTION IF EXISTS log_salary_changes;
    
    CREATE OR REPLACE FUNCTION log_salary_changes()
@@ -1249,56 +1251,52 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 - **`RAISE`**  
   Hata mesajları veya uyarılar oluşturur. Kullanıcıya veya yöneticilere mesaj iletmek için kullanılır.
   
-	 ```sql
-	   
-		DO $$
-		BEGIN
+	 ```sql	   
+	DO $$
+	BEGIN
 		
-			RAISE NOTICE 'Order IDOrder Date Customer ID';
-			RAISE NOTICE '==========================================================';
+	RAISE NOTICE 'Order IDOrder Date Customer ID';
+	RAISE NOTICE '==========================================================';
 		
-		END $$;
-		
-		DO $$
-		DECLARE
-			maxid INTEGER = (SELECT MAX(orderid) FROM Sales.Orders);
-			rec RECORD;
-		BEGIN
-			RAISE NOTICE 'Order_ID Order_Date Empid  Customer_ID';
-			RAISE NOTICE '==========================================================';
+	END $$;
+	
+	DO $$
+	DECLARE
+		maxid INTEGER = (SELECT MAX(orderid) FROM Sales.Orders);
+		rec RECORD;
+	BEGIN
+		RAISE NOTICE 'Order_ID Order_Date Empid  Customer_ID';
+		RAISE NOTICE '==========================================================';
 			
-			FOR rec IN
-						SELECT orderid, orderdate, empid, custid
-						FROM Sales.Orders
-						WHERE orderid = maxid
+		FOR rec IN
+			SELECT orderid, orderdate, empid, custid
+			FROM Sales.Orders
+			WHERE orderid = maxid
 			LOOP        
 				RAISE NOTICE '%,  %,  %, %', rec.orderid, rec.orderdate, rec.empid, rec.custid;
 			END LOOP;
-		END $$;
+	 END $$;
 	 ```
   
 - **`FUNCTION`**  
   Tekrarlanabilir işlemleri kapsayan fonksiyonlar tanımlar. İşlevsellik sağlar ve kod tekrarını azaltır.
   
 	```sql
-		DROP Function EmployeeRapor;
+	DROP FUNCTION EmployeeRapor;
+	
+	CREATE FUNCTION EmployeeRapor(inparam_country VARCHAR)
+	RETURNS TABLE(r_empid int, r_firstname VARCHAR, r_lastname VARCHAR, r_country VARCHAR)
+	AS $$
+	BEGIN
+		RETURN Query
+		SELECT empid, firstname, lastname, country
+		FROM HR.Employees
+		WHERE country = inparam_country;
+	END $$ Language plpgsql;
+				
+		SELECT * FROM EmployeeRapor('USA');
 		
-		CREATE Function EmployeeRapor(inparam_country VARCHAR)
-		Returns TABLE(r_empid int, r_firstname VARCHAR, r_lastname VARCHAR, r_country VARCHAR)
-		AS $$
-		Begin
-			Return Query
-			SELECT empid, firstname, lastname, country
-			FROM HR.Employees
-			WHERE country = inparam_country;
-		End $$ Language plpgsql;
-		
-		
-		SELECT *
-		FROM EmployeeRapor('USA');
-		
-		SELECT *
-		FROM EmployeeRapor('UK');
+		SELECT * FROM EmployeeRapor('UK');
 	```
 ## 10. Ek Konular
 
