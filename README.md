@@ -412,8 +412,8 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 - **`ARRAY_LENGTH`**  
   Dizinin uzunluğunu döndürür.
   
- ```sql
- ```
+	 ```sql
+	 ```
 
 - **`ARRAY` ve `ARRAY_AGG`**  
   Dizileri işlemek ve birleştirmek için kullanılır.
@@ -983,11 +983,11 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
      
 ### Transaction Isolation Level
 
-  İşlemlerin izolasyon seviyelerini belirler.
+İşlemlerin izolasyon seviyelerini belirler.
   
    ```sql
    SHOW TRANSACTION ISOLATION LEVEL;
-
+	
    SELECT *
    FROM pg_settings
    WHERE name = 'transaction_isolation';
