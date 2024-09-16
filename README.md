@@ -18,7 +18,8 @@ Bu kılavuz, PostgreSQL Egzersizleri üzerindeki tüm soruları ve cevapları de
    - [ORDER BY](#order-by)
    - [HAVING](#having)
    - [BETWEEN](#between)
-   - [LIMIT ve OFFSET-FETCH](#limit-ve-offset-fetch)
+   - [LIMIT](#limit)
+   - [OFFSET-FETCH](#offset-fetch)
 3. [Veri Manipülasyonu ve Fonksiyonlar](#3-veri-manipülasyonu-ve-fonksiyonlar)
    - [Aritmetik Fonksiyonlar](#aritmetik-fonksiyonlar)
    - [String Fonksiyonları](#string-fonksiyonları)
@@ -109,9 +110,10 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 - **`BETWEEN`**  
   Belirli bir aralık içindeki verileri seçmek için kullanılır. Örneğin, `BETWEEN 10 AND 20` ifadesi 10 ile 20 arasındaki değerleri getirir.
 
-### LIMIT ve OFFSET-FETCH
+### LIMIT
 - **`LIMIT`**  
   Sorgu sonuçlarının kaç satır döndürüleceğini belirler.  
+### OFFSET-FETCH
 - **`OFFSET-FETCH`**  
   Verilerin hangi noktadan itibaren döndürülmeye başlanacağını belirtir. Bu, büyük veri setleriyle çalışırken verilerin sayısını kontrol etmek için kullanılır.
 
