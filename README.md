@@ -984,12 +984,12 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 ### Transaction Isolation Level
  İşlemlerin izolasyon seviyelerini belirler.
 	  
-```sql
-SHOW TRANSACTION ISOLATION LEVEL;
-
-SELECT *
-FROM pg_settings
-WHERE name = 'transaction_isolation';
+ ```sql
+ SHOW TRANSACTION ISOLATION LEVEL;
+	
+ SELECT *
+ FROM pg_settings
+ WHERE name = 'transaction_isolation';
 ```
 
 - **`READ COMMITTED`**  
