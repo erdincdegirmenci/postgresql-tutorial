@@ -55,6 +55,15 @@ Bu kılavuz, PostgreSQL Egzersizleri üzerindeki tüm soruları ve cevapları de
     - [LISTAGG](#listagg)
 
 ***
+
+## Getting Started
+
+Başlamak için öncelikle yapmanız gereken tek şey çalışmaları açmak, sorulara göz atmak ve cevaplamaya çalışmak!
+
+Bu çalışmalar için kullanılan veri setinin sadece çalışmaları desteklemek için tasarlandığını ve veri tabanı şemasının bazı açılardan kusurlu olduğunu unutmayın; bu yüzden iyi bir tasarım örneği olarak değerlendirmeyin. 
+
+Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sırası ile çalıştırınız.
+
 ### 1. Temel SQL İşlemleri
 
 ### SELECT
