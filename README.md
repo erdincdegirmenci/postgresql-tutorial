@@ -187,19 +187,17 @@ SELECT empid, firstname, lastname, country FROM HR.EMPLOYEES;
    ORDER BY orderdate, orderid
    Limit 5 OFFSET 3;
   ```
-   ```sql
+ ```sql
    SELECT orderid, orderdate, custid, empid
    FROM Sales.Orders
    ORDER BY orderdate, orderid
    FETCH FIRST 1 ROW ONLY;
-  ```
   ```
    ```sql
    SELECT orderid, orderdate, custid, empid
    FROM Sales.Orders
    ORDER BY orderdate, orderid
    OFFSET 3 ROWS FETCH NEXT 5 ROW ONLY;
-  ```
   ```
   ```sql
    SELECT orderid, orderdate, custid, empid
@@ -334,16 +332,31 @@ SELECT empid, firstname, lastname, country FROM HR.EMPLOYEES;
 - **`STRING_TO_ARRAY`**  
   String'i bir diziye dönüştürür.
    ```sql
-   SELECT FORMAT('Hello %s', 'World');
-   SELECT FORMAT('Testing %s, %s, %s, %%', 'one', 'two', 'three');
-   SELECT FORMAT('INSERT INTO %I VALUES(%L)', 'Foo bar', 'Reilly');
+   SELECT STRING_TO_ARRAY('Lorem ipsum dolor sit amet', ' ') AS words;
   ```
 - **`REGEXP_SPLIT_TO_ARRAY`, `REGEXP_SPLIT_TO_TABLE`**  
-  String'i düzenli ifadeler kullanarak diziye veya tabloya böler.  
+  String'i düzenli ifadeler kullanarak diziye veya tabloya böler.
+     ```sql
+   SELECT regexp_split_to_array('Lorem ipsum dolor sit amet', '\s+') AS words;
+  ```
+     ```sql
+     SELECT regexp_split_to_table('Lorem ipsum dolor sit amet', '\s+') AS word;
+   SELECT regexp_split_to_table('Lorem ipsum dolor sit amet', ' ') AS word;
+  ```
 - **`ARRAY_AGG`**  
-  Satırlardan bir dizi oluşturur.  
+  Satırlardan bir dizi oluşturur.
+   ```sql
+  ```
 - **`UNNEST`**  
-  Diziyi satırlara dönüştürür.  
+  Diziyi satırlara dönüştürür.
+   ```sql
+   SELECT 
+       CategoryId, 
+       Name, 
+       UNNEST(Aciklama, ',') AS SonucA
+   FROM 
+       CategoryTest;
+  ```
 - **`ARRAY_LENGTH`**  
   Dizinin uzunluğunu döndürür.
 
@@ -359,13 +372,138 @@ SELECT empid, firstname, lastname, country FROM HR.EMPLOYEES;
 
 ### İleri Düzey Veri Türleri
 - **`JSON`, `JSONB`**  
-  JSON verilerini saklar. `JSONB` daha verimli bir depolama sağlar.  
+  JSON verilerini saklar. `JSONB` daha verimli bir depolama sağlar.
+     ```sql
+   SELECT
+   	title,
+   	book_info -> 'publisher' as "publisher",
+   	book_info -> 'Kagit_Baski_Fiyati' as "KagitBaski",
+   	book_info -> 'Digital_Baski_Fiyati' as "DigitalBaski"
+   FROM Table_hstore;
+   
+   -- JSON  Data Type
+   DROP TABLE IF EXISTS Table_json;
+   
+   CREATE TABLE Table_json
+   (
+   	id Serial Primary Key,
+   	docs JSON
+   );
+   
+   INSERT INTO Table_json(docs)
+   Values
+   		('[1,2,3,4,5,6]'),
+   		('[2,3,4,5,6,7]'),
+   		('{"key":"value"}');
+   
+   SELECT *
+   FROM Table_json;
+   
+   SELECT docs
+   FROM Table_json;
+     ```
+   ```sql
+   ALTER TABLE table_json
+   ALTER COLUMN docs TYPE JSONB;
+   
+   SELECT *
+   FROM Table_json
+   WHERE docs @> '2';
+  ```
 - **`ARRAY`**  
-  Birden fazla değeri bir veri türünde saklar.  
+  Birden fazla değeri bir veri türünde saklar.
+   ```sql
+   -- ARRAY Data Type
+   DROP TABLE IF EXISTS table_array;
+   
+   CREATE TABLE table_array
+   (
+   	id Serial Primary Key,
+   	firstname Varchar(30),
+   	phone text[]
+   );
+   
+   INSERT INTO table_array(firstname,phone) 
+   Values
+   		('Ali',Array['05559988876','00905559988876']),
+   		('Radi',Array['05359988899','00905359988899']);
+   
+   INSERT INTO table_array(firstname,phone) 
+   Values
+   		('Yaren',Array['05332244459','00905551234569']);
+   
+   SELECT *
+   FROM table_array;
+   
+   SELECT
+   		firstname,
+   		phone,
+   		phone[1] as Telno1,
+   		phone[2] as Telno2
+   FROM table_array;
+  ```
 - **`HSTORE`**  
   Anahtar-değer çiftlerini saklar.
-- **`XML`**  
-  XML verisini saklamak için kullanılır.  
+    ```sql
+     CREATE Extension IF NOT EXISTS hstore;
+       
+     CREATE TABLE Table_hstore
+      (
+      	id Serial Primary Key,
+      	title Varchar(50) NOT Null,
+      	book_info hstore
+      );
+      
+      INSERT INTO Table_hstore(title, book_info)
+      Values
+      (
+      	'Uzay Kesifi',
+      	'
+      	"publisher" => "ABC publisher",
+      	"Kagit_Baski_Fiyati" => "1000",
+      	"Digital_Baski_Fiyati" => "200"
+      	'
+      );
+      
+      INSERT INTO Table_hstore(title, book_info)
+      Values
+      (
+      	'Universes',
+      	'
+      	"publisher" => "Ali publisher",
+      	"Kagit_Baski_Fiyati" => "2000",
+      	"Digital_Baski_Fiyati" => "1200"
+      	'
+      );
+      
+      SELECT *
+      FROM Table_hstore;
+    ```
+- **`XML`, ``**  
+  XML veri türü ile verileri saklar ve işler.
+ `XPATH`
+  XPATH, XML verileri üzerinde sorgulama yapar.
+
+    ```sql
+    DROP TABLE IF EXISTS orders;
+   
+   CREATE TABLE orders (
+       order_id SERIAL PRIMARY KEY,
+       order_data XML
+   );
+   
+   -- Inserting a sample XML data
+   INSERT INTO orders (order_data) VALUES ('<order><item>Widget</item><price>25.00</price></order>');
+   
+   SELECT *
+   FROM Orders;
+    ```
+   ```sql
+   SELECT
+       xpath('//item/text()', order_data) AS item_name,
+       xpath('//price/text()', order_data) AS item_price
+   FROM orders;
+    ```
 - **`UUID`**  
   Evrensel benzersiz tanımlayıcı.  
 - **`BYTEA`**  
@@ -374,20 +512,34 @@ SELECT empid, firstname, lastname, country FROM HR.EMPLOYEES;
   Kısıtlı değerler listesi sağlar.  
 - **`GEOMETRY`, `GEOGRAPHY`**  
   Coğrafi verileri saklamak için (PostGIS eklentisi ile).
-- **`XML`**  
-  XML veri türü ile verileri saklar ve işler.
-- **`XPATH`**  
-  XML verileri üzerinde sorgulama yapar.
-
+  
 ### Veri Yapıları ve İndeksler
 - **`INDEX`**  
   Veritabanı sorgularının hızını artırmak için kullanılır.  
 - **`BTREE`**  
-  Varsayılan indeks türüdür ve verileri sıralı olarak tutar.  
+  Varsayılan indeks türüdür ve verileri sıralı olarak tutar.
+     ```sql
+   DROP INDEX table_json_docs_idx;
+   -- CREATE INDEX On table_json Using GIN(docs jsonb_path_ops);
+   CREATE INDEX table_json_docs_idx On table_json Using GIN(docs jsonb_path_ops);
+   
+   SELECT *
+   FROM Table_json
+   WHERE docs @> '2';
+    ```
 - **`HASH`**  
   Hash tabanlı indeksler sağlar.  
 - **`GIN`**  
-  JSONB ve diğer koleksiyon türleri için kullanılır.  
+  JSONB ve diğer koleksiyon türleri için kullanılır.
+   ```sql
+         DROP INDEX table_json_docs_idx;
+         -- CREATE INDEX On table_json Using GIN(docs jsonb_path_ops);
+         CREATE INDEX table_json_docs_idx On table_json Using GIN(docs jsonb_path_ops);
+      
+      SELECT *
+      FROM Table_json
+      WHERE docs @> '2';
+    ```
 - **`GiST`**  
   Coğrafi ve diğer yapılandırılmış veriler için kullanılır.  
 - **`SP-GiST`**  
