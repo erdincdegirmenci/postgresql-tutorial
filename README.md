@@ -9,7 +9,8 @@ Bu kılavuz, PostgreSQL Egzersizleri üzerindeki tüm soruları ve cevapları de
 [BASLANGIC](#baslangic)
 1. [Temel SQL İşlemleri](#1-temel-sql-işlemleri)
    - [SELECT](#select)
-   - [INSERT, UPDATE, DELETE](#insert-update-delete)
+   - [UPDATE](#update)
+   - [DELETE](#delete)
    - [JOIN](#join)
 2. [Filtreleme ve Sıralama](#2-filtreleme-ve-sıralama)
    - [WHERE](#where)
@@ -74,9 +75,11 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 
 ### INSERT, UPDATE, DELETE
 - **`INSERT`**  
-  Yeni veri ekler.  
+  Yeni veri ekler.
+### UPDATE, DELETE
 - **`UPDATE`**  
-  Mevcut verileri günceller.  
+  Mevcut verileri günceller.
+### DELETE
 - **`DELETE`**  
   Verileri siler.
 
