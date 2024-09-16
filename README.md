@@ -73,11 +73,11 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 ### SELECT
 - **`SELECT *` ve `SELECT empid, firstname, lastname, country`**  
   PostgreSQL'de verileri sorgulamak için kullanılan `SELECT` komutları, veritabanındaki tablo veya görünümlerden belirli sütunları veya tüm sütunları seçmenizi sağlar. `SELECT *` tüm sütunları seçerken, belirli sütunları belirttiğinizde sadece o sütunları getirir.  
-
-```sql
-SELECT *  FROM HR.EMPLOYEES;
-SELECT empid, firstname, lastname, country FROM HR.EMPLOYEES;
-```
+	
+	```sql
+	SELECT *  FROM HR.EMPLOYEES;
+	SELECT empid, firstname, lastname, country FROM HR.EMPLOYEES;
+	```
 
 ### INSERT
 - **`INSERT`**  
