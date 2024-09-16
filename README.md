@@ -72,28 +72,26 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 
 ### SELECT
 - **`SELECT *` ve `SELECT empid, firstname, lastname, country`**  
-  PostgreSQL'de verileri sorgulamak için kullanılan `SELECT` komutları, veritabanındaki tablo veya görünümlerden belirli sütunları veya tüm sütunları seçmenizi sağlar. `SELECT *` tüm sütunları seçerken, belirli sütunları belirttiğinizde sadece o sütunları getirir.  
-	
+  PostgreSQL'de verileri sorgulamak için kullanılan `SELECT` komutları, veritabanındaki tablo veya görünümlerden belirli sütunları veya tüm sütunları seçmenizi sağlar. `SELECT *` tüm sütunları seçerken, belirli sütunları belirttiğinizde sadece o sütunları getirir.  	
 	```sql
 	SELECT *  FROM HR.EMPLOYEES;
 	SELECT empid, firstname, lastname, country FROM HR.EMPLOYEES;
 	```
-
 ### INSERT
 - **`INSERT`**  
   Yeni veri ekler.
-  ```sql
-  ```
+	  ```sql
+	  ```
 ### UPDATE
 - **`UPDATE`**  
   Mevcut verileri günceller.
-  ```sql
-  ```
+	  ```sql
+	  ```
 ### DELETE
 - **`DELETE`**  
   Verileri siler.
-```sql
-```
+	```sql
+	```
 ### JOIN
 - **`JOIN`,`RIGHT JOIN`, `LEFT JOIN`, `CROSS JOIN`, `FULL JOIN`, `OUTER JOIN`**  
   `JOIN` Birden fazla tabloyu ilişkilendirerek birleştirmenizi sağlar.
@@ -137,7 +135,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Verileri belirli bir sütuna göre gruplamak için kullanılır.
   ```sql
    SELECT
-   		e.empid,
+   e.empid,
    FROM Sales.Orders as o
    JOIN HR.Employees as e on e.empid = o.empid
    WHERE o.shipcountry = 'USA'
@@ -157,6 +155,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 ### HAVING
 - **`HAVING`**  
   `GROUP BY` ile gruplanmış veriler üzerinde filtreleme yapmak için kullanılır.  [SUM](#aritmetik-fonksiyonlar)
+  
   ```sql
    SELECT
    		e.empid,
