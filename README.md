@@ -29,21 +29,18 @@
    - [CASE](#case)
    - [COALESCE](#coalesce)
    - [STRING_AGG](#string_agg)
-6. [XML / XPATH](#6-xml-xpath)
-   - [XML](#xml)
-   - [XPATH](#xpath)
-7. [Tarih ve Zaman Fonksiyonları](#7-tarih-ve-zaman-fonksiyonları)
+6. [Tarih ve Zaman Fonksiyonları](#7-tarih-ve-zaman-fonksiyonları)
    - [DATE Fonksiyonları](#date-fonksiyonları)
-8. [Dizi ve Matris İşlemleri](#8-dizi-ve-matris-i̇şlemleri)
-9. [Performans ve Kilitleme](#9-performans-ve-kilitleme)
+7. [Dizi ve Matris İşlemleri](#8-dizi-ve-matris-i̇şlemleri)
+8. [Performans ve Kilitleme](#9-performans-ve-kilitleme)
    - [Kilitleme Seçenekleri](#kilitleme-seçenekleri)
    - [Transaction Isolation Level](#transaction-isolation-level)
-10. [Veritabanı Yönetimi ve Bilgi](#10-veritabanı-yönetimi-ve-bilgi)
+9. [Veritabanı Yönetimi ve Bilgi](#10-veritabanı-yönetimi-ve-bilgi)
     - [Veri Görüntüleme](#veri-görüntüleme)
     - [Veritabanı Bilgisi](#veritabanı-bilgisi)
     - [Kümeleme ve Birleştirme](#kümeleme-ve-birleştirme)
     - [Diğer İşlemler](#diğer-i̇şlemler)
-11. [Ek Konular](#11-ek-konular)
+10. [Ek Konular](#11-ek-konular)
     - [NULLS FIRST, NULLS LAST](#nulls-first-null-s-last)
     - [OPERATORLER](#operatorler)
     - [COLLATE](#collate)
@@ -173,6 +170,10 @@
   Kısıtlı değerler listesi sağlar.  
 - **`GEOMETRY`, `GEOGRAPHY`**  
   Coğrafi verileri saklamak için (PostGIS eklentisi ile).
+- **`XML`**  
+  XML veri türü ile verileri saklar ve işler.
+- **`XPATH`**  
+  XML verileri üzerinde sorgulama yapar.
 
 ### Veri Yapıları ve İndeksler
 - **`INDEX`**  
@@ -224,17 +225,7 @@
 - **`STRING_AGG`**  
   Birden fazla satırı tek bir string'e birleştirir.
 
-## 6. XML / XPATH
-
-### XML
-- **`XML`**  
-  XML veri türü ile verileri saklar ve işler.
-
-### XPATH
-- **`XPATH`**  
-  XML verileri üzerinde sorgulama yapar.
-
-## 7. Tarih ve Zaman Fonksiyonları
+## 6. Tarih ve Zaman Fonksiyonları
 
 - **`CURRENT_DATE`, `CURRENT_TIME`, `CURRENT_TIMESTAMP`**  
   Tarih ve saat bilgilerini döndürür.
@@ -257,7 +248,7 @@
 - **`CURRENT_DATE`, `CURRENT_TIMESTAMP`, `AGE`, `DATE_TRUNC`**  
   Tarih ve zaman bilgilerini sağlar ve manipüle eder.
 
-## 8. Dizi ve Matris İşlemleri
+## 7. Dizi ve Matris İşlemleri
 
 - **`ARRAY` ve `ARRAY_AGG`**  
   Dizileri işlemek ve birleştirmek için kullanılır.
@@ -279,7 +270,7 @@
 - **`ARRAY_LENGTH`**  
   Bir dizinin uzunluğunu döndürür. Örneğin, `ARRAY_LENGTH(ARRAY[1, 2, 3], 1)` ifadesi `3` döndürür.
 
-## 9. Performans ve Kilitleme
+## 8. Performans ve Kilitleme
 
 ### Kilitleme Seçenekleri
 - **`WITH (NOLOCK)`**  
@@ -297,7 +288,7 @@
 - **`READ COMMITTED`**  
   İşlemlerin okuma seviyesini belirler ve diğer işlemler tarafından yapılan değişiklikleri okur. Bu seviyede yapılan sorgular, sadece commit edilmiş verileri döndürür.
 
-## 10. Veritabanı Yönetimi ve Bilgi
+## 9. Veritabanı Yönetimi ve Bilgi
 
 ### Veri Görüntüleme
 - **`pg_stat_activity`, `pg_stat_database`**  
@@ -350,7 +341,7 @@
 - **`FUNCTION`**  
   Tekrarlanabilir işlemleri kapsayan fonksiyonlar tanımlar. İşlevsellik sağlar ve kod tekrarını azaltır.
 
-## 11. Ek Konular
+## 10. Ek Konular
 
 ### NULLS FIRST, NULLS LAST
 - **`NULLS FIRST`, `NULLS LAST`**  
