@@ -33,7 +33,7 @@ Bu kılavuz, PostgreSQL Egzersizleri üzerindeki tüm soruları ve cevapları de
    - [CTES (Common Table Expressions)](#ctes-common-table-expressions)
    - [ROW_NUMBER](#row_number)
    - [PARTITION](#partition)
-   - [CASE](#case)
+   - [CASE YAPILARI](#case-yapilari)
    - [COALESCE](#coalesce)
    - [STRING_AGG](#string_agg)
 6. [Tarih ve Zaman Fonksiyonları](#7-tarih-ve-zaman-fonksiyonları)
@@ -347,16 +347,6 @@ SELECT empid, firstname, lastname, country FROM HR.EMPLOYEES;
   Satırlardan bir dizi oluşturur.
    ```sql
   ```
-- **`UNNEST`**  
-  Diziyi satırlara dönüştürür.
-   ```sql
-   SELECT 
-       CategoryId, 
-       Name, 
-       UNNEST(Aciklama, ',') AS SonucA
-   FROM 
-       CategoryTest;
-  ```
 - **`ARRAY_LENGTH`**  
   Dizinin uzunluğunu döndürür.
 
@@ -598,7 +588,7 @@ SELECT empid, firstname, lastname, country FROM HR.EMPLOYEES;
       			lastname,
       			country,
       			Row_Number() Over(Partition By country ORDER BY country, firstname) as SiraNo
-      	FROM Hr.employees	
+      	FROM HR.employees	
       )
       SELECT *
       FROM Rapor
@@ -636,65 +626,216 @@ SELECT empid, firstname, lastname, country FROM HR.EMPLOYEES;
 ### ROW_NUMBER
 - **`ROW_NUMBER()`**  
   Her satıra bir sıra numarası atar.
+   ```sql
+   SELECT
+   		empid,
+   		firstname,
+   		lastname,
+   		country,
+   		Row_Number() Over(ORDER BY firstname) as SiraNo
+   FROM HR.Employees;
+
+   SELECT
+		empid,
+		firstname,
+		lastname,
+		country,
+		Row_Number() Over(ORDER BY country, firstname) as SiraNo
+   FROM HR.Employees;
+    ```
 
 ### PARTITION
 - **`PARTITION BY`**  
   Verileri gruplara ayırarak pencere fonksiyonları uygulamanızı sağlar.
+   ```sql
+   			SELECT
+					custid,
+					orderdate,
+					orderid,
+					empid,
+					shipcountry,
+			 		ROW_NUMBER() over(Partition By shipcountry order by orderid desc) as RowNum
+			FROM Sales.Orders	
+   ```
 
-### CASE
-- **`CASE`**  
+### CASE YAPILARI
+- **`SIMLE CASE`**  
   Koşullu mantık sağlar. Belirli koşullara göre değer döndürür.
-
+     ```sql
+   SELECT
+   		orderid,
+   		orderdate,
+   		freight,
+   		shipperid,
+   		CASE shipperid
+   			WHEN 1 THEN 'Denizyolu'
+   			WHEN 2 THEN 'Havayolu'
+   			WHEN 3 THEN 'Karayolu'
+   		End as SevkiyatTuru
+   FROM Sales.Orders;	
+   ```
+- **`SEARCHED CASE`**  
+     ```sql
+   SELECT
+   		orderid,
+   		orderdate,
+   		freight,
+   		shipperid,
+   		CASE 
+   			WHEN shipperid = 1 THEN 'Denizyolu'
+   			WHEN shipperid = 2 THEN 'Havayolu'
+   			WHEN shipperid = 3 THEN 'Karayolu'
+   		End as SevkiyatTuru
+   FROM Sales.Orders;
+   ```
+   ```sql
+   SELECT
+		orderid,
+		orderdate,
+		Extract(Year FROM Orderdate)as Yillar,	
+		Extract(Month FROM Orderdate)as Aylar,
+		CASE Extract(Month FROM Orderdate)
+			WHEN 1 THEN 'Ocak'
+			WHEN 2 THEN 'Subat'
+			WHEN 3 THEN 'Mart'
+			WHEN 4 THEN 'Nisan'
+			WHEN 5 THEN 'Mayıs'
+			WHEN 6 THEN 'Haziran'
+			WHEN 7 THEN 'Temmuz'
+			WHEN 8 THEN 'Agustos'
+			WHEN 9 THEN 'Eylul'
+			WHEN 10 THEN 'Ekim'
+			WHEN 11 THEN 'Kasım'
+			WHEN 12 THEN 'Aralık'
+			Else 'Bilinmiyor'
+		End as AyAdi,	
+		Freight
+   FROM Sales.Orders
+   ORDER BY 1,2;
+    ```
 ### COALESCE
 - **`COALESCE`**  
   NULL değerler yerine ilk geçerli değeri döndürür.
-
+   ```sql
+   	SELECT 
+	    custid,
+	    companyname,
+	    region,
+	    region AS regionB,
+		COALESCE(region, '') as RegionC
+	FROM 
+	    sales.customers
+	WHERE 
+	    COALESCE(region, '') = '';	
+   ```
+    ```sql
+   SELECT 
+	emp_id,
+	hourly_wage,
+	salary,
+	commission,
+	num_sales,
+	COALESCE(hourly_wage * 10,salary,commission * num_sales) AS "Total Salary"
+   FROM wages;
+   ```
 ### STRING_AGG
 - **`STRING_AGG`**  
   Birden fazla satırı tek bir string'e birleştirir.
+  ```sql
+   SELECT STRING_AGG(firstname,', ') as Sonuc FROM HR.Employees;
+   ```
+    ```sql
+   SELECT country, STRING_AGG(firstname,', ') as Sonuc
+   FROM HR.Employees
+   GROUP BY country;
 
+    SELECT country, STRING_AGG(firstname,'/') as Sonuc
+   FROM HR.Employees
+   GROUP BY country;
+   ```
 ## 6. Tarih ve Zaman Fonksiyonları
 
-- **`CURRENT_DATE`, `CURRENT_TIME`, `CURRENT_TIMESTAMP`**  
+- **`NOW`,`CURRENT_DATE`, `CURRENT_TIME`, `CURRENT_TIMESTAMP`, `LOCALTIME`**  
   Tarih ve saat bilgilerini döndürür.
+    ```sql
+   SELECT NOW(), CURRENT_DATE,CURRENT_TIME,CURRENT_TIMESTAMP,LOCALTIME;
+   ```
 - **`DATEADD`**  
-  Tarihe belirli bir süre ekler. Örneğin, `DATEADD(day, 5, CURRENT_DATE)` ifadesi, bugünkü tarihe 5 gün ekler.
-
+  Tarihe belirli bir süre ekler.
+    ```sql
+    SELECT DATEADD(month, 2, '2024-07-06') AS NewDate;
+    SELECT DATEADD(year, 1, '2024-07-06') AS NewDate;
+    SELECT DATEADD(hour, 5, '2024-07-06 12:00:00') AS NewDateTime;
+    SELECT DATEADD(minute, 30, '2024-07-06 12:00:00') AS NewDateTime;
+    SELECT DATEADD(second, 45, '2024-07-06 12:00:00') AS NewDateTime;
+   ```
 - **`DATEDIFF`**  
-  İki tarih arasındaki farkı hesaplar. Örneğin, `DATEDIFF(day, '2024-01-01', CURRENT_DATE)` ifadesi, iki tarih arasındaki gün sayısını verir.
-
+  İki tarih arasındaki farkı hesaplar.
+   ```sql
+    SELECT DATEDIFF(month, '2024-01-01', '2024-07-01') AS DateDifference;
+    SELECT DATEDIFF(year, '2020-07-01', '2024-07-01') AS DateDifference;
+    SELECT DATEDIFF(hour, '2024-07-01 08:00:00', '2024-07-01 18:00:00') AS DateDifference;
+    SELECT DATEADD(minute, 30, '2024-07-06 12:00:00') AS NewDateTime;
+    SELECT DATEADD(second, 45, '2024-07-06 12:00:00') AS NewDateTime;
+   ```
 - **`DATEPART`**  
   Tarihin belirli bir bölümünü döndürür (yıl, ay, gün vb.). Örneğin, `DATEPART(year, CURRENT_DATE)` ifadesi, mevcut tarihin yılını döndürür.
-
+   ```sql
+   SELECT
+   	DATE_PART('year',Now()) as Yillar,
+   	DATE_PART('MONTH',Now()) as Aylar,
+   	DATE_PART('DAY',Now()) as Gunler,
+   	DATE_PART('WEEK',Now()) as Haftalar,
+   	DATE_PART('HOUR',Now()) as HOUR_,
+   	DATE_PART('MINUTE',Now()) as MINUTE_,
+   	DATE_PART('SECOND',Now()) as SECOND_,
+   	DATE_PART('MILLISECOND',Now()) as MILLISECOND_,
+   	DATE_PART('MICROSECOND',Now()) as MICROSECOND_;
+   ```
 - **`DATE_TRUNC`**  
   Tarihi belirli bir süre birimine (yıl, ay, gün vb.) yuvarlar. Örneğin, `DATE_TRUNC('month', CURRENT_DATE)` ifadesi, mevcut tarihi ayın ilk gününe yuvarlar.
-
+   ```sql
+   SELECT DATE_TRUNC('year', '2024-07-06'::timestamp) AS TruncatedToYear;
+   SELECT DATE_TRUNC('hour', '2024-07-06 12:34:56'::timestamp) AS TruncatedToHour;
+   SELECT DATE_TRUNC('minute', '2024-07-06 12:34:56'::timestamp) AS TruncatedToMinute;
+   SELECT DATE_TRUNC('second', '2024-07-06 12:34:56.123459'::timestamp) AS TruncatedToSecond;
+   ```
 - **`MAKE_DATE`**  
   Belirli yıl, ay ve gün bileşenlerinden bir tarih oluşturur. Örneğin, `MAKE_DATE(2024, 9, 15)` ifadesi 15 Eylül 2024 tarihini oluşturur.
-
-### DATE Fonksiyonları
-- **`CURRENT_DATE`, `CURRENT_TIMESTAMP`, `AGE`, `DATE_TRUNC`**  
-  Tarih ve zaman bilgilerini sağlar ve manipüle eder.
-
+   ```sql
+   SELECT MAKE_DATE(2024, 7, 6) AS ConstructedDate;
+   ```
 ## 7. Dizi ve Matris İşlemleri
 
 - **`ARRAY` ve `ARRAY_AGG`**  
   Dizileri işlemek ve birleştirmek için kullanılır.
   - **`STRING_TO_ARRAY`**  
   Bir string'i diziye dönüştürür. Örneğin, `STRING_TO_ARRAY('a,b,c', ',')` ifadesi `['a', 'b', 'c']` dizisini oluşturur.
-
+   ```sql
+   SELECT STRING_TO_ARRAY('USA,Canada', ',') AS Ulkeler;
+   ```
 - **`REGEXP_SPLIT_TO_ARRAY`**  
   Düzenli ifadeler kullanarak bir string'i diziye böler. Örneğin, `REGEXP_SPLIT_TO_ARRAY('a1b2c3', '[0-9]')` ifadesi `['a', 'b', 'c']` dizisini oluşturur.
 
 - **`REGEXP_SPLIT_TO_TABLE`**  
   Düzenli ifadeler kullanarak bir string'i tabloya böler. Her bir elemanı bir satır olarak döndürür.
-
+   ```sql
+   SELECT regexp_split_to_table('USA,Canada', ',') AS Ulkeler;
+   ```
 - **`ARRAY_AGG`**  
   Satırları bir diziye dönüştürür. Örneğin, `ARRAY_AGG(column_name)` ifadesi belirli bir sütundaki tüm değerleri bir diziye toplar.
-
+   ```sql
+   ```
 - **`UNNEST`**  
   Bir diziyi satırlarına ayırır. Örneğin, `UNNEST(ARRAY[1, 2, 3])` ifadesi her bir dizi elemanını bir satıra dönüştürür.
-
+   ```sql
+   SELECT 
+       CategoryId, 
+       Name, 
+       UNNEST(Aciklama, ',') AS SonucA
+   FROM 
+       CategoryTest;
+  ```
 - **`ARRAY_LENGTH`**  
   Bir dizinin uzunluğunu döndürür. Örneğin, `ARRAY_LENGTH(ARRAY[1, 2, 3], 1)` ifadesi `3` döndürür.
 
@@ -706,16 +847,41 @@ SELECT empid, firstname, lastname, country FROM HR.EMPLOYEES;
 
 - **`SKIP LOCKED`**  
   Kilitlenmiş satırları atlar ve sadece kilitlenmemiş satırları okur.
-
+   ```sql
+   SELECT orderid, orderdate, custid
+   FROM Sales.Orders
+   FOR UPDATE SKIP LOCKED;
+  ```
 - **`NOWAIT`**  
   Kilitlenmiş satırlar varsa hata döndürür ve işlemi hemen durdurur.
+     ```sql
+   SELECT orderid, orderdate, custid
+   FROM Sales.Orders
+   FOR UPDATE NOWAIT;
+  ```
+     
 ### Transaction Isolation Level
-- **`SERIALIZABLE`, `REPEATABLE READ`**  
+
   İşlemlerin izolasyon seviyelerini belirler.
-  
+ ```sql
+      SHOW TRANSACTION ISOLATION LEVEL;
+      
+      SELECT *
+      FROM pg_settings
+      WHERE name = 'transaction_isolation';
+  ```
 - **`READ COMMITTED`**  
   İşlemlerin okuma seviyesini belirler ve diğer işlemler tarafından yapılan değişiklikleri okur. Bu seviyede yapılan sorgular, sadece commit edilmiş verileri döndürür.
+ ```sql
+     BEGIN;
 
+   SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+   
+   -- Your SELECT statement
+   SELECT * FROM your_table;
+   
+   COMMIT;
+  ```
 ## 9. Veritabanı Yönetimi ve Bilgi
 
 ### Veri Görüntüleme
@@ -725,25 +891,49 @@ SELECT empid, firstname, lastname, country FROM HR.EMPLOYEES;
 ### Veritabanı Bilgisi
 - **`pg_tables`, `pg_indexes`**  
   Veritabanındaki tablolar ve indeksler hakkında bilgi verir.
+   ```sql
+      SELECT *
+   FROM pg_tables
+   ORDER BY schemaname;
+  ```
   - **`CATALOG`**  
   Veritabanı yapısını ve metadataları hakkında bilgi sağlar.
-
+   ```sql
+  ```
 - **`INFORMATION_SCHEMA`**  
   Veritabanının şeması hakkında bilgi sağlar; tablolar, sütunlar, veri türleri vb. hakkında bilgi alabilirsiniz.
-
+   ```sql
+   SELECT * FROM INFORMATION_SCHEMA.TABLES;
+  ```
 
 ### Kümeleme ve Birleştirme
 - **`CLUSTER`**  
   Tabloyu bir dizine göre sıralar ve fiziksel olarak yeniden düzenler.
 - **`INTERSECT`**  
   İki sorgunun kesişim kümesini döndürür. Ortak olan satırları getirir.
-
-- **`UNION`**  
+   ```sql
+   SELECT Distinct country FROM Sales.Customers
+   INTERSECT
+   SELECT Distinct country FROM HR.Employees
+  ```
+- **`UNION`,`UNION ALL`**  
   İki veya daha fazla sorgunun birleşim kümesini döndürür. Aynı sütun yapısına sahip sonuçları birleştirir.
+   ```sql
+   SELECT country FROM Sales.Customers
+   UNION
+   SELECT country FROM HR.Employees;
 
+   SELECT country FROM Sales.Customers
+   UNION ALL
+   SELECT country FROM HR.Employees;
+  ```
 - **`EXCEPT`**  
   Bir sorgunun diğer sorgunun sonucundan farklarını döndürür. İlk sorguda olup, ikinci sorguda olmayan satırları getirir.
-
+   ```sql
+   SELECT Distinct country FROM Sales.Customers
+   EXCEPT
+   SELECT Distinct country FROM HR.Employees
+  ```
 ### Diğer İşlemler
 - **`VACUUM`**  
   Ölü verileri temizler ve veritabanının performansını artırır.
@@ -753,49 +943,308 @@ SELECT empid, firstname, lastname, country FROM HR.EMPLOYEES;
   Tablo istatistiklerini günceller.
   - **`STORED PROCEDURE`**  
   Saklı prosedürler oluşturur. SQL kodlarını saklı prosedürlerde tutarak yeniden kullanılabilir.
+   ```sql
 
+   DROP TABLE IF EXISTS accounts;
+
+   CREATE TABLE accounts (
+       id int generated by default as identity,
+       name varchar(100) NOT null,
+       balance dec(15,2) NOT null,
+       primary key(id)
+   );
+   
+   INSERT INTO accounts(name,balance)
+   values('Bob',10000);
+   
+   INSERT INTO accounts(name,balance)
+   values('Alice',10000);
+   
+   SELECT *
+   from accounts;
+      DROP procedure transfer;
+      
+      CREATE OR REPLACE PROCEDURE TRANSFER
+      (
+         sender int,
+         receiver int, 
+         amount dec
+      )
+      language plpgsql    
+      as $$
+      begin
+          update accounts 
+          set balance = balance - amount 
+          where id = sender;
+      
+          update accounts 
+          set balance = balance + amount 
+          where id = receiver;
+      
+          commit;
+      end;$$;
+  ```
 - **`CALL`**  
   Saklı prosedürleri çağırır. Saklı prosedürleri çalıştırmak için kullanılır.
-
+   ```sql
+   Call Transfer(1,2,1000);
+   
+   SELECT *  FROM accounts;
+  ```
 - **`TRIGGER`**  
   Belirli olaylara yanıt olarak otomatik işlemler tanımlar. Bir veri değişikliği gerçekleştiğinde otomatik olarak çalışır.
-
+  ```sql
+   DROP TABLE IF EXISTS employees_trg;
+   
+   CREATE TABLE employees_trg (
+       id SERIAL PRIMARY KEY,
+       name VARCHAR(100),
+       position VARCHAR(100),
+       salary NUMERIC
+   );
+   
+   DROP TABLE IF EXISTS employees_log;
+   
+   CREATE TABLE employees_trg_log (
+       log_id SERIAL PRIMARY KEY,
+       employee_id INT,
+       old_salary NUMERIC,
+       new_salary NUMERIC,
+       change_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+   );
+   
+   
+   SELECT *
+   FROM employees_trg;
+   
+   SELECT *
+   FROM employees_trg_log;
+   
+   
+   -- CREATE the Trigger Function
+   DROP FUNCTION IF EXISTS log_salary_changes;
+   
+   CREATE OR REPLACE FUNCTION log_salary_changes()
+   RETURNS TRIGGER AS $$
+   BEGIN
+       INSERT INTO employees_trg_log (employee_id, old_salary, new_salary)
+       VALUES (OLD.id, OLD.salary, NEW.salary);
+       RETURN NEW;
+   END;
+   $$ LANGUAGE plpgsql;
+   
+   -- CREATE the Trigger
+   CREATE TRIGGER salary_update_trigger
+   AFTER UPDATE OF salary ON employees_trg
+   FOR EACH ROW
+   EXECUTE FUNCTION log_salary_changes();
+  ```
 - **`CURSOR`**  
   Sorgu sonuçlarını satır satır işlemek için kullanılır. Özellikle büyük veri setleri ile çalışırken kullanışlıdır.
-
+  ```sql
+   DROP PROCEDURE list_employees;
+   
+   CREATE OR REPLACE PROCEDURE list_employees()
+   LANGUAGE plpgsql
+   AS $$
+   DECLARE
+       emp_record RECORD;
+       emp_cursor CURSOR FOR SELECT empid, name, age, department FROM employeesP;
+   BEGIN
+       OPEN emp_cursor;
+       LOOP
+           FETCH emp_cursor INTO emp_record;
+           EXIT WHEN NOT FOUND;
+           RAISE NOTICE 'ID: %, Name: %, Age: %, Department: %',
+               emp_record.empid, emp_record.name, emp_record.age, emp_record.department;
+       END LOOP;
+       CLOSE emp_cursor;
+   END;
+   $$;
+  ```
 - **`RAISE`**  
   Hata mesajları veya uyarılar oluşturur. Kullanıcıya veya yöneticilere mesaj iletmek için kullanılır.
+ ```sql
+   
+DO $$
+BEGIN
 
+	RAISE NOTICE 'Order IDOrder Date Customer ID';
+	RAISE NOTICE '==========================================================';
+
+END $$;
+
+DO $$
+DECLARE
+	maxid INTEGER = (SELECT MAX(orderid) FROM Sales.Orders);
+	rec RECORD;
+BEGIN
+	RAISE NOTICE 'Order_ID Order_Date Empid  Customer_ID';
+	RAISE NOTICE '==========================================================';
+	
+	FOR rec IN
+				SELECT orderid, orderdate, empid, custid
+				FROM Sales.Orders
+				WHERE orderid = maxid
+	LOOP        
+		RAISE NOTICE '%,  %,  %, %', rec.orderid, rec.orderdate, rec.empid, rec.custid;
+	END LOOP;
+END $$;
+  ```
 - **`FUNCTION`**  
   Tekrarlanabilir işlemleri kapsayan fonksiyonlar tanımlar. İşlevsellik sağlar ve kod tekrarını azaltır.
+ ```sql
+DROP Function EmployeeRapor;
 
+CREATE Function EmployeeRapor(inparam_country VARCHAR)
+Returns TABLE(r_empid int, r_firstname VARCHAR, r_lastname VARCHAR, r_country VARCHAR)
+AS $$
+Begin
+	Return Query
+	SELECT empid, firstname, lastname, country
+	FROM HR.Employees
+	WHERE country = inparam_country;
+End $$ Language plpgsql;
+
+
+SELECT *
+FROM EmployeeRapor('USA');
+
+SELECT *
+FROM EmployeeRapor('UK');
+  ```
 ## 10. Ek Konular
 
 ### NULLS FIRST, NULLS LAST
 - **`NULLS FIRST`, `NULLS LAST`**  
   NULL değerlerini sıralama sırasında nasıl ele alacağınızı belirler.
-
+```sql
+SELECT
+		firstname,
+		lastname,
+		region
+FROM HR.Employees
+ORDER BY region NULLS FIRST;
+SELECT
+		firstname,
+		lastname,
+		region
+FROM HR.Employees
+ORDER BY region NULLS LAST;
+```
 ### OPERATORLER
 - **`+`, `-`, `*`, `/`, `%`, `||`**  
   Aritmetik ve string operatörleri sağlar.
+```sql
+SELECT
+		custid,
+		companyname,
+		region
+FROM Sales.Customers
+WHERE region = 'SP';
 
+--
+
+SELECT
+		custid,
+		companyname,
+		region
+FROM Sales.Customers
+WHERE region != 'SP';
+
+--
+
+SELECT
+		custid,
+		companyname,
+		region
+FROM Sales.Customers
+WHERE region <> 'SP';
+
+SELECT *
+FROM  Sales.Customers
+WHERE region > 'SP';
+
+SELECT
+		custid,
+		companyname,
+		region
+FROM Sales.Customers
+WHERE region = Null;
+
+
+SELECT
+		custid,
+		companyname,
+		region
+FROM Sales.Customers
+WHERE region = 'Null';
+
+SELECT
+		custid,
+		companyname,
+		region
+FROM Sales.Customers
+WHERE region is Null;
+
+SELECT
+		custid,
+		companyname,
+		region
+FROM Sales.Customers
+WHERE region is NOT Null;
+```
 ### COLLATE
 - **`COLLATE`**  
   String'lerin karşılaştırılmasında kullanılan dil ve sıralama kurallarını belirtir.
+```sql
+SELECT * FROM pg_collation;
 
+SELECT * FROM sales.Customers
+WHERE address COLLATE latin1_general_ci_ai like (N'ä%');
+
+SELECT * FROM sales.Customers
+WHERE address COLLATE latin1_general_ci_as like (N'ä%');
+
+SELECT * FROM sales.Customers
+WHERE address COLLATE latin1_general_cs_ai like (N'ä%');
+
+SELECT * FROM sales.Customers
+WHERE address COLLATE latin1_general_cs_as like (N'ä%');
+
+SELECT empid, firstname, lastname
+FROM HR.Employees
+WHERE lastname = N'davis';
+
+SELECT empid, firstname, lastname
+FROM HR.Employees
+WHERE lastname COLLATE Latin1_General_CI_AS = N'davis';
+
+SELECT empid, firstname, lastname
+FROM HR.Employees
+WHERE lastname COLLATE Latin1_General_CS_AS = N'Davis';
+
+SELECT empid, firstname, lastname
+FROM HR.Employees
+WHERE lastname COLLATE Latin1_General_CS_AS = N'davis';
+```
 ### TABLESAMPLE
 - **`TABLESAMPLE`**  
   Tablo örneklemesi sağlar.
-
+```sql
+```
 ### ROW LEVEL SECURITY
 - **`ROW LEVEL SECURITY`**  
   Satır bazında güvenlik sağlar.
-
+```sql
+```
 ### TEMPORARY TABLES
 - **`TEMPORARY TABLES`**  
   Geçici tablolar oluşturur ve bu tablolar sadece oturum süresince geçerli olur.
-
+```sql
+```
 ### LISTAGG
 - **`LISTAGG`**  
   Dizi elemanlarını belirli bir ayırıcı ile birleştirir.
-
+```sql
+```
