@@ -52,7 +52,7 @@
     - [TEMPORARY TABLES](#temporary-tables)
     - [LISTAGG](#listagg)
 
-## 1. Temel SQL İşlemleri
+### 1. Temel SQL İşlemleri
 
 ### SELECT
 - **`SELECT *` ve `SELECT empid, firstname, lastname, country`**  
