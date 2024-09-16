@@ -75,10 +75,8 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   PostgreSQL'de verileri sorgulamak için kullanılan `SELECT` komutları, veritabanındaki tablo veya görünümlerden belirli sütunları veya tüm sütunları seçmenizi sağlar. `SELECT *` tüm sütunları seçerken, belirli sütunları belirttiğinizde sadece o sütunları getirir.  
 
 ```sql
-SELECT MemberID, FirstName, LastName
-FROM Members
-WHERE MembershipType = 'Gold'
-ORDER BY LastName;
+Select *  From HR.EMPLOYEES;
+```
 
 ### INSERT
 - **`INSERT`**  
