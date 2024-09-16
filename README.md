@@ -228,17 +228,14 @@
 
 ### XML
 - **`XML`**  
-  XML veri türlerini saklar ve işler.  
-- **`XMLTABLE`**  
-  XML verilerini tabloya dönüştürür.
+  XML veri türü ile verileri saklar ve işler.
 
 ### XPATH
 - **`XPATH`**  
-  XML verileri üzerinde sorgular yapmanızı sağlar.
+  XML verileri üzerinde sorgulama yapar.
 
 ## 7. Tarih ve Zaman Fonksiyonları
 
-### DATE Fonksiyonları
 - **`CURRENT_DATE`, `CURRENT_TIME`, `CURRENT_TIMESTAMP`**  
   Tarih ve saat bilgilerini döndürür.
 - **`DATEADD`**  
@@ -255,6 +252,10 @@
 
 - **`MAKE_DATE`**  
   Belirli yıl, ay ve gün bileşenlerinden bir tarih oluşturur. Örneğin, `MAKE_DATE(2024, 9, 15)` ifadesi 15 Eylül 2024 tarihini oluşturur.
+
+### DATE Fonksiyonları
+- **`CURRENT_DATE`, `CURRENT_TIMESTAMP`, `AGE`, `DATE_TRUNC`**  
+  Tarih ve zaman bilgilerini sağlar ve manipüle eder.
 
 ## 8. Dizi ve Matris İşlemleri
 
@@ -281,7 +282,6 @@
 ## 9. Performans ve Kilitleme
 
 ### Kilitleme Seçenekleri
-
 - **`WITH (NOLOCK)`**  
   Okuma işlemleri sırasında tablolarda kilitlenmeleri engeller ve okuma kilitlenmeleri olmadan veri okur.
 
@@ -290,7 +290,6 @@
 
 - **`NOWAIT`**  
   Kilitlenmiş satırlar varsa hata döndürür ve işlemi hemen durdurur.
-
 ### Transaction Isolation Level
 - **`SERIALIZABLE`, `REPEATABLE READ`**  
   İşlemlerin izolasyon seviyelerini belirler.
@@ -316,9 +315,8 @@
 
 ### Kümeleme ve Birleştirme
 - **`CLUSTER`**  
-  Veritabanı tablosunu belirli bir indeksle sıralar.
-
-  - **`INTERSECT`**  
+  Tabloyu bir dizine göre sıralar ve fiziksel olarak yeniden düzenler.
+- **`INTERSECT`**  
   İki sorgunun kesişim kümesini döndürür. Ortak olan satırları getirir.
 
 - **`UNION`**  
@@ -328,8 +326,12 @@
   Bir sorgunun diğer sorgunun sonucundan farklarını döndürür. İlk sorguda olup, ikinci sorguda olmayan satırları getirir.
 
 ### Diğer İşlemler
-- **`VACUUM`, `REINDEX`**  
-  Veritabanını temizler ve yeniden indeksler.
+- **`VACUUM`**  
+  Ölü verileri temizler ve veritabanının performansını artırır.
+- **`REINDEX`**  
+  İndeksleri yeniden oluşturur.
+- **`ANALYZE`**  
+  Tablo istatistiklerini günceller.
   - **`STORED PROCEDURE`**  
   Saklı prosedürler oluşturur. SQL kodlarını saklı prosedürlerde tutarak yeniden kullanılabilir.
 
@@ -350,38 +352,31 @@
 
 ## 11. Ek Konular
 
-
 ### NULLS FIRST, NULLS LAST
-
-- **`NULLS FIRST`**  
-  NULL değerlerini sıralama işlemlerinde başa yerleştirir. Örneğin, sıralama işlemi sırasında NULL değerler ilk sırada gösterilir.
-
-- **`NULLS LAST`**  
-  NULL değerlerini sıralama işlemlerinde sona yerleştirir. Örneğin, sıralama işlemi sırasında NULL değerler en sonunda gösterilir.
+- **`NULLS FIRST`, `NULLS LAST`**  
+  NULL değerlerini sıralama sırasında nasıl ele alacağınızı belirler.
 
 ### OPERATORLER
-- **`<>`, `=`, `>`, `<`**  
-  Karşılaştırma ve mantıksal işlemler için çeşitli operatörler kullanılır. İki değer arasındaki ilişkileri belirlemek için kullanılır.
+- **`+`, `-`, `*`, `/`, `%`, `||`**  
+  Aritmetik ve string operatörleri sağlar.
 
 ### COLLATE
 - **`COLLATE`**  
-  Metin verilerinin sıralama ve karşılaştırma kurallarını belirler. Özellikle farklı dillerdeki verilerin sıralanması için kullanılır.
+  String'lerin karşılaştırılmasında kullanılan dil ve sıralama kurallarını belirtir.
 
 ### TABLESAMPLE
 - **`TABLESAMPLE`**  
-  Büyük tablolardan rastgele örnekler almanızı sağlar. Örneğin, bir tablodan belirli bir oran veya sayıda örnek veri almak için kullanılır.
+  Tablo örneklemesi sağlar.
 
 ### ROW LEVEL SECURITY
 - **`ROW LEVEL SECURITY`**  
-  Satır bazında güvenlik sağlar ve belirli kullanıcıların verileri görmesini veya değiştirmesini kontrol eder. Veri güvenliğini artırır.
+  Satır bazında güvenlik sağlar.
 
 ### TEMPORARY TABLES
 - **`TEMPORARY TABLES`**  
-  Geçici verileri saklamak için kullanılır ve oturum sonunda otomatik olarak silinir. Genellikle geçici veri işleme için kullanılır.
+  Geçici tablolar oluşturur ve bu tablolar sadece oturum süresince geçerli olur.
 
 ### LISTAGG
 - **`LISTAGG`**  
-  Birden fazla satırdaki verileri birleştirir ve belirli bir ayırıcı ile bir string oluşturur. Örneğin, birden fazla satırdaki değerleri tek bir satırda birleştirmek için kullanılır.
-
-
+  Dizi elemanlarını belirli bir ayırıcı ile birleştirir.
 
