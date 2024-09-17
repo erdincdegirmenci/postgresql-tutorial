@@ -569,10 +569,6 @@ SELECT
 FROM Hr.employees as e
 ORDER BY empid;
 
--- Yukarıdaki cozum karmasık gozukuyor ve kod gelistirmede istenilen gibi degil
--- Bunu ya derived table veya CTEs ile yapalım
-
--- Cozum 2 Derived Table
 SELECT
 		empid,
 		firstname,
@@ -1287,7 +1283,6 @@ SELECT
 FROM Sales.Customers
 WHERE region = Null;
 
--- Yukarıdaki sorgu veri getirmez
 
 SELECT
 		custid,
@@ -1657,8 +1652,6 @@ SELECT orderid, orderdate, custid, empid
 FROM Sales.Orders
 ORDER BY orderdate, orderid
 OFFSET 3 ROWS FETCH NEXT 5 ROW ONLY;
--- Yukarıdaki yapı hem MSSQL hemde PostgreSQL'de cErdinçsir
--- her iki sorguyu inceleyiniz ve yorumlayınız
 
 SELECT orderid, orderdate, custid, empid
 FROM Sales.Orders
@@ -1749,7 +1742,6 @@ WHERE
 	orderid = 10249 or
 	orderid = 10259;
 
--- Yukarıdaki sorguyu IN ile yazalım
 SELECT orderid, orderdate, custid, empid
 FROM Sales.Orders
 WHERE 
@@ -2233,7 +2225,6 @@ SELECT
 FROM Sales.Orders
 GROUP BY shipcountry;
 
--- Yukarıdaki sorguda En alt satırda Genel Toplamlarıda gosterelim
 SELECT
 	shipcountry,
 	sum(case when 	shipcountry='TR' THEN freight::Numeric(6,2) else 0 END) AS TRToplamFreight,
@@ -2837,21 +2828,16 @@ SELECT empid, firstname, lastname
 FROM HR.Employees
 WHERE lastname COLLATE Latin1_General_CS_AS = N'davis';
 
--- Yukarıdaki sorgu ise veri bulamayacaktır.
 
 SELECT empid, firstname, lastname
 FROM HR.Employees
 WHERE lastname collate latin1_general_ci_as = N'davis'
 
 
--- Yukarıdaki sorgu ise veri bulacaktır.
-
 SELECT empid, firstname, lastname
 FROM HR.Employees
 WHERE firstname COLLATE Latin1_General_CI_AS = N'sära';
 
--- Yukarıdaki sorgu sonuc dondermez
--- Asagıda yer alan sorgu sonuc donderir
 
 SELECT empid, firstname, lastname
 FROM HR.Employees
@@ -2910,7 +2896,7 @@ SELECT 'w;x*y-z' = 'wxyz' COLLATE num_ignore_punct; -- true
 SELECT lastname
 FROM HR.EMPLOYEES
 WHERE lastname COLLATE ignore_accent_case = 'King';
--- Yukarıdaki kullanım ile asagida yer alan kullanım aynı sonucu donecektir
+
 SELECT lastname
 FROM HR.EMPLOYEES
 WHERE lastname COLLATE ignore_accent_case = 'king';
@@ -3542,8 +3528,6 @@ SELECT
 	SPLIT_PART(birthdate::text,'-',3) as Gunler
 FROM HR.Employees;
 
--- Yukarıdaki sorguda Yillar, Aylar ve Gunler Text olarak doner
--- Bunu integer yapalım
 
 SELECT
 	firstname,
@@ -4304,7 +4288,6 @@ FROM Sales.Orders
 GROUP BY empid
 HAVING sum(case when shipcountry = 'TR' then 1 else 0 end) > 10;
 
--- Yukarıdaki sorguyu CTEs ile inceleyelim
 With
 A as
 (
@@ -4410,10 +4393,6 @@ SELECT empid, lastname
 FROM HR.Employees
 WHERE lastname ~ '[ABC]';
 
--- Yukarıdaki ifade ile Buyuk harf ile ABC harflerinden herhangi birini iceren verileri arar
--- Asagidaki ifade ise buyuk kucuk harf ABC(abc) harflerinden herhangi birini iceren verileri arar
--- Buradaki * Buyuk Kucuk harf duyarlılıgı icindir(Yani Case insensitive)
--- Yani A = a ... gibi
 
 SELECT empid, lastname
 FROM HR.Employees
@@ -4423,8 +4402,6 @@ SELECT empid, lastname
 FROM HR.Employees
 WHERE lastname ~ '[USG]';
 
--- Yukarıdaki ifade ile Buyuk harf ile USG iceren verileri arar
--- Asagidaki ifade ise buyuk kucuk harf farketmeksizin USG(usg) iceren verileri arar
 
 SELECT empid, lastname
 FROM HR.Employees
@@ -4437,12 +4414,10 @@ WHERE lastname ~ '[ABC]';
 SELECT empid, lastname
 FROM HR.Employees
 WHERE lastname ~ '^[ABC]';
--- Yukarıdaki ifade ile Buyuk harf ile ABC harflerinden herhangi biri ile baslayan verileri arar
 
 SELECT empid, lastname
 FROM HR.Employees
 WHERE lastname ~ '^[abc]';
--- Yukarıdaki ifade ile kucuk harf ile abc harflerinden herhangi biri ile baslayan verileri arar
 
 SELECT empid, lastname
 FROM HR.Employees
@@ -4594,7 +4569,6 @@ SELECT
 FROM table_array
 WHERE phone[2] = '00905559988876';
 
--- Yukarıdaki sorguya unnest ile bakalım
 
 SELECT
 		id,
@@ -4616,8 +4590,6 @@ SELECT
 		unnest(phone) as PhoneB
 FROM table_array
 WHERE unnest(phone) = '00905559988876';
-
--- Yukarıdaki sorgu hata verecektir
 -- Cozelim
 With
 A as
@@ -4759,8 +4731,6 @@ SELECT
     product_data->'tags' AS product_tags
 FROM products;
 
--- Yukarıdaki sorguda product_data->'name'  ifadesi ile gelen sonuc "Widget"
--- Asagidaki  sorguda product_data->>'name' ifadesi ile gelen sonuc  Widget
 
 SELECT
     product_data->>'name' AS product_name,
@@ -5125,7 +5095,7 @@ SELECT To_Char(TimeStamp '2024-06-18 15:01:59', 'HH24:MI:SS');
 -- To_Number
 SELECT
 	To_Number('1459.89', '9999.99'),
-	To_Number('1459.89', '9999D99'), -- Yukarıdaki ile aynı sonucu verir
+	To_Number('1459.89', '9999D99'), 
 	To_Number('1459.89', '9999.9'),
 	To_Number('1459.89', '9999.'),
 	To_Number('1459.89', '9999');
@@ -7115,10 +7085,6 @@ FROM sales.orders
 WHERE 	shipcountry = 'TR' and 
  		empid = 1 and 
  		Extract(year from orderdate) = '2008'
-
--- Yukarıdaki islemi Declare ile yapalım
-
-
 	
 DO $$
 DECLARE
