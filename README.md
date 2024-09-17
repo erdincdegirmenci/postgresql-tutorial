@@ -309,13 +309,13 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   `ROUND` ve `CEIL` sayıları yuvarlamak için kullanılır.
   
   ```sql
-  SELECT SUM(freight) as TotalFreight  FROM Sales.Orders  
-  SELECT MIN(freight) as MinFreight  FROM Sales.Orders
-  SELECT MAX(freight) as MaxFreight  FROM Sales.Orders  
-  SELECT AVG(freight) as AvgFreight  FROM Sales.Orders
-  SELECT Count(*)*0.01 FROM Sales.Orders
-  SELECT CEIL(Count(*)*0.01) FROM Sales.Orders  
-  SELECT Round(Count(*)*0.01) FROM Sales.Orders
+  SELECT SUM(freight) as TotalFreight  FROM Sales.Orders;  
+  SELECT MIN(freight) as MinFreight  FROM Sales.Orders;
+  SELECT MAX(freight) as MaxFreight  FROM Sales.Orders; 
+  SELECT AVG(freight) as AvgFreight  FROM Sales.Orders;
+  SELECT Count(*)*0.01 FROM Sales.Orders;
+  SELECT CEIL(Count(*)*0.01) FROM Sales.Orders; 
+  SELECT Round(Count(*)*0.01) FROM Sales.Orders;
   ```
 ### Tip Dönüşümleri
 - **`CAST`**  
@@ -325,16 +325,6 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
    SELECT CAST('18-MAY-2024' as Date);
    SELECT CAST(123 AS FLOAT);
    SELECT CAST(123.45 AS INTEGER);
-   ```
-   
-- **`TRY_CAST`**  
-  
-   ```sql
-   SELECT try_cast('2024-02-29', Null::date) AS Tarih;
-   SELECT try_cast('2025-02-29', Null::date) AS Tarih;
-   SELECT try_cast('foo', NULL::varchar);
-   SELECT try_cast('2024-01-41', NULL::date);
-   SELECT try_cast('2024-01-41', CURRENT_DATE);
    ```
   
 ### String Fonksiyonları
