@@ -575,7 +575,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 	TO_CHAR(5559988876,'0 (000) 000 00 00') as Phone5,
 	'+90 ' || TO_CHAR(5559988876,'(999) 999 99 99') as Phone6;
 	```
-  - **`TO_NUMBER`**  
+- **`TO_NUMBER`**  
   Bir dizeyi (string) veya diğer veri türlerini sayısal bir değere dönüştürmek için kullanılır. 
   
  	```sql
@@ -589,7 +589,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 	SELECT TO_NUMBER('14,596.89-', '99G999D99');
 	```
   
-  - **`TO_DATE`**  
+- **`TO_DATE`**  
   Tarih verileri ile çalışırken veri dönüşümleri yapmak için oldukça yararlıdır.
   
  	```sql
@@ -1246,12 +1246,6 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
    SELECT * FROM pg_indexes WHERE tablename = 'your_table';
   ```
    
-  - **`CATALOG`**  
-  Veritabanı yapısını ve metadataları hakkında bilgi sağlar.
-
-   ```sql
-  ```
-   
 - **`INFORMATION_SCHEMA`**  
   Veritabanının şeması hakkında bilgi sağlar; tablolar, sütunlar, veri türleri vb. hakkında bilgi alabilirsiniz.
   
@@ -1299,23 +1293,19 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   ```
    
 ### Diğer İşlemler
-- **`VACUUM`**  
-  Ölü verileri temizler ve veritabanının performansını artırır.
-  
-   ```sql
-    ```
    
 - **`REINDEX`**  
   İndeksleri yeniden oluşturur.
 
    ```sql
-   REINDEX TABLE table_name;  -- Tablo için indeksleri yeniden oluşturur
+   REINDEX TABLE table_name;
     ```
    
 - **`ANALYZE`**  
   Tablo istatistiklerini günceller.
 
    ```sql
+   ANALYZE;
     ```
    
 - **`STORED PROCEDURE`**  
@@ -1643,13 +1633,6 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   
 	```sql
  	CREATE TEMP TABLE temp_table_name AS SELECT * FROM existing_table;
-	```
- 
-### LISTAGG
-- **`LISTAGG`**  
-  Dizi elemanlarını belirli bir ayırıcı ile birleştirir.
-  
-	```sql
 	```
 ### IN
 - **`IN`** 
