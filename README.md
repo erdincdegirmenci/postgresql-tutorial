@@ -86,7 +86,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Yeni veri ekler.
   
 	 ```sql
- 	 INSERT INTO HR.EMPLOYEES(IBAN, isim) VALUES ('8834567898123459', 'Erdinc');
+ 	  INSERT INTO HR.EMPLOYEES({kolona,kolonb) VALUES (a_value,b_value);
 	```
   
 ### UPDATE
@@ -94,7 +94,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Mevcut verileri günceller.
   
 	 ```sql
-  	UPDATE HR.EMPLOYEES SET salary = salary + 500 WHERE id = 1;
+  	 UPDATE HR.EMPLOYEES SET phone = '(90) 507-4129211' WHERE empid = 5;
 	```
   
 ### DELETE
@@ -102,7 +102,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Verileri siler.
   
 	```sql
- 	DELETE FROM HR.EMPLOYEES WHERE id = 2;
+ 	DELETE FROM HR.EMPLOYEES WHERE empid = 2;
 	```
  
 ### JOIN
@@ -190,7 +190,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   
   ```sql
    SELECT
-   e.empid,
+   e.empid
    FROM Sales.Orders as o
    JOIN HR.Employees as e on e.empid = o.empid
    WHERE o.shipcountry = 'USA'
