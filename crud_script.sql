@@ -6812,7 +6812,6 @@ GO
 
 */
 
---Dummy TOPACIK
 
 Create Schema Dummy;
 
@@ -25077,7 +25076,7 @@ Create Table Dummy.Kisiler
 Go
 
 	insert into Dummy.Kisiler(Ad, Soyad, Cinsiyet, Sehir, ilce,TelNO, TCNO, DogumTarihi, Yas, YasGrubu, Maas)
-	Values('Dummy', 'TOPACIK', 'E', 'Newyork','LongIsland','05559988876','19539902299', '1973-11-21', 34, 'GENC', 99000);
+	Values('Dummy', 'DUMMY', 'E', 'Newyork','LongIsland','05559988876','19539902299', '1973-11-21', 34, 'GENC', 99000);
 	Go
 
 
@@ -25186,7 +25185,7 @@ Select * From Dummy.Kisiler
 
 */
 
-Print 'Dummy TOPACIK -  Basarilar diliyorum - 0555 998 88 76'
+Print 'Dummy DUMMY -  Basarilar diliyorum - 0555 998 88 76'
 Print ''
 Print 'islemler tamamlandı'
 Print ''
@@ -25199,5 +25198,5 @@ Print 'Ornek: Exec Dummy.Proc_KisilerOtomatikUret 1000'
 
 Select
 		'Tablolar Olusturuldu, Basarilar Diliyorum...' as Mesaj,
-		'Dummy TOPACIK 0555 998 88 76' as Hazirlayan,
+		'Dummy DUMMY 0555 998 88 76' as Hazirlayan,
 		'alitopacik@gmail.com' as email;
