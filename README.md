@@ -1,4 +1,4 @@
-# PostgreSQL Kapsamlı Kılavuzu
+# PostgreSQL İlk Adımlar : Giriş ve İleri Düzey
 
 PostgreSQL, açık kaynak kodlu, güçlü ve esnek bir ilişkisel veritabanı yönetim sistemidir. SQL standardını destekleyen ve geniş bir fonksiyon yelpazesine sahip olan PostgreSQL, veri yönetimi, sorgulama ve analiz konularında sağlam bir temel sağlar. Bu kılavuz, PostgreSQL'in temel ve ileri düzey özelliklerini kapsamlı bir şekilde ele alarak, veritabanı yönetimi konusunda derinlemesine bilgi edinmenize yardımcı olmayı amaçlamaktadır. Veritabanı işlemleri, veri manipülasyonu ve performans iyileştirme gibi konulara dair kapsamlı bilgilerle, PostgreSQL'in sunduğu imkanları en iyi şekilde kullanabilmeniz için gereken tüm detayları sunacaktır.
 
