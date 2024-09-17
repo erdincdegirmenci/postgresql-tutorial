@@ -54,7 +54,7 @@ Bu kılavuz, PostgreSQL Egzersizleri üzerindeki tüm soruları ve cevapları de
     - [TABLESAMPLE](#tablesample)
     - [ROW LEVEL SECURITY](#row-level-security)
     - [TEMPORARY TABLES](#temporary-tables)
-    - [LISTAGG](#listagg)
+    - [IN](#in)
 
 ***
 
