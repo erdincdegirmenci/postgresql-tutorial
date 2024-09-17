@@ -84,6 +84,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Yeni veri ekler.
   
 	 ```sql
+ 	 INSERT INTO HR.EMPLOYEES(IBAN, isim) VALUES ('8834567898123459', 'Erdinc');
 	```
   
 ### UPDATE
