@@ -39,7 +39,6 @@ Bu kılavuz, PostgreSQL Egzersizleri üzerindeki tüm soruları ve cevapları de
    - [COALESCE](#coalesce)
    - [STRING_AGG](#string_agg)
 6. [Tarih ve Zaman Fonksiyonları](#6-tarih-ve-zaman-fonksiyonları)
-   - [Tarih Fonksiyonları](#tarih-fonksiyonları)
 7. [Dizi ve Matris İşlemleri](#7-dizi-ve-matris-i̇şlemleri)
 8. [Performans ve Kilitleme](#8-performans-ve-kilitleme)
    - [Kilitleme Seçenekleri](#kilitleme-seçenekleri)
