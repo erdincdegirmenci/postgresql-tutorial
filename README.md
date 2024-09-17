@@ -866,12 +866,6 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   SELECT *
   FROM Ali.vwRapor1
   ```
-  
-- **`SEQUENCE`**  
-  Otomatik artan değerler üretir.
-
-   ```sql
-    ```
 
 ## 5. İleri Düzey Fonksiyonlar ve İşlemler
 
