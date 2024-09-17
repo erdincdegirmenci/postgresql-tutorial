@@ -561,12 +561,6 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
        CategoryTest;
   ```
    
-- **`ARRAY_LENGTH`**  
-  Bir dizinin uzunluğunu döndürür.
-  
-	   ```sql
-	   ```  
-   
 - **`TO_CHAR`**  
   Bu fonksiyon, tarih ve sayısal değerleri belirli bir formatta metin (string) olarak dönüştürmek için kullanılır.
   
