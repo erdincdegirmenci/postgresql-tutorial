@@ -350,7 +350,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   
    ```sql
    SELECT 
-   erdinc.degirmenci@outlook.com'
+   'erdinc.degirmenci@outlook.com'
    ,POSITION('@' IN 'erdinc.degirmenci@outlook.com')
    ,SUBSTRING('erdinc.degirmenci@outlook.com',1, 11-1)
    ,SUBSTRING('erdinc.degirmenci@outlook.com',1, POSITION('@' IN 'erdinc.degirmenci@outlook.com')-1);
