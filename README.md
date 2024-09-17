@@ -140,35 +140,28 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   `CROSS JOIN` tüm kombinasyonları döndürür.
   
     ```sql
-    SELECT
-    ef.empid,
-    ef.firstname,
-    ef.lastname,
-    ef.ToplamFreight,
-    tf.GenelToplamFreight,
-    ef.ToplamFreight / tf.GenelToplamFreight * 100 AS Oran
-    FROM EmployeeFreight AS ef
-    CROSS JOIN TotalFreight AS tf
-    ORDER BY ef.empid;
+    SELECT *
+    FROM HR.EMPLOYEES as e
+    CROSS JOIN Sales.Orders as o;
     ```
   `FULL JOIN` tüm verileri getirir.
   
     ```sql
-    SELECT *
-    FROM Ali.CityJoin as ci
-    FULL JOIN Ali.CustomersJoin as cu on cu.cityid = ci.cityid;
+   SELECT *
+   FROM HR.EMPLOYEES as e
+   FULL JOIN Sales.Orders as o on e.empid = o.empid;
     ```
     
   `OUTER JOIN` ise bazı verileri hariç tutar.
   
     ```sql
     SELECT *
-    FROM Ali.CityJoin as ci
-    LEFT OUTER JOIN Ali.CustomersJoin as cu on cu.cityid = ci.cityid;
+    FROM HR.EMPLOYEES as e
+    LEFT OUTER JOIN Sales.Orders as o on e.empid = o.empid;
 	
     SELECT *
-    FROM Ali.CityJoin as ci
-    RIGHT OUTER JOIN Ali.CustomersJoin as cu on cu.cityid = ci.cityid;
+    FROM HR.EMPLOYEES as e
+    RIGHT OUTER JOIN Sales.Orders as o on e.empid = o.empid;
     ```
   
 
@@ -545,13 +538,26 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Bir diziyi satırlarına ayırır. Örneğin, `UNNEST(ARRAY[1, 2, 3])` ifadesi her bir dizi elemanını bir satıra dönüştürür.
   
    ```sql
+   Drop TABLE if exists CategoryTest;
+
+   CREATE TABLE CategoryTest (
+   CategoryId SERIAL PRIMARY KEY,
+   Name TEXT,
+   Aciklama TEXT
+   );
+	
+   INSERT INTO CategoryTest (Name, Aciklama) VALUES 
+	('Category1', 'Uzum,Erik,Muz'),
+	('Category2', 'Karpuz,Kavun'),
+	('Category3', 'Elma');
+   
    SELECT 
-       CategoryId, 
-       Name, 
-       UNNEST(Aciklama, ',') AS SonucA
+   CategoryId, 
+   Name, 
+   UNNEST(Aciklama, ',') AS SonucA
    FROM 
-       CategoryTest;
-  ```
+   CategoryTest;
+   ```
    
 - **`TO_CHAR`**  
   Bu fonksiyon, tarih ve sayısal değerleri belirli bir formatta metin (string) olarak dönüştürmek için kullanılır.
