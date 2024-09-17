@@ -4,6 +4,8 @@ PostgreSQL, açık kaynak kodlu, güçlü ve esnek bir ilişkisel veritabanı y�
 
 Bu kılavuz, PostgreSQL Egzersizleri üzerindeki tüm soruları ve cevapları derlemektedir. Bu problemlerin gerçekten çözülmesi, sadece bu kılavuzu gözden geçirmekten daha ileriye gitmenizi sağlayacaktır, bu yüzden [PostgreSQL Exercises](https://pgexercises.com) ziyaret etmenizi öneririm.
 
+[Daha fazla örnek için göz atabilirsiniz.](postgresql_exercises.sql)
+
 ## İçindekiler
 
 [BASLANGIC](#baslangic)
