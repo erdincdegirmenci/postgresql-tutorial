@@ -511,24 +511,34 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   String'i düzenli ifadeler kullanarak diziye veya tabloya böler.
   
   ```sql
-  SELECT regexp_split_to_array('Lorem ipsum dolor sit amet', '\s+') AS words;
+  SELECT REGEXP_SPLIT_TO_ARRAY('Lorem ipsum dolor sit amet', '\s+') AS words;
   ```
      
   ```sql
   SELECT regexp_split_to_table('Lorem ipsum dolor sit amet', '\s+') AS word;
   SELECT regexp_split_to_table('Lorem ipsum dolor sit amet', ' ') AS word;
   ```
+
+ - **`CHAR_LENGTH`**  
+  Dizinin uzunluğunu döndürür.
+  
+	```sql
+  	SELECT CHAR_LENGTH('PostgreSQL');
+	```
    
 - **`ARRAY_LENGTH`**  
   Dizinin uzunluğunu döndürür.
   
-	 ```sql
-	 ```
+	```sql
+  	SELECT ARRAY_LENGTH(ARRAY[1, 2, 3], 1);  -- 3 döner
+	```
 
 - **`ARRAY` ve `ARRAY_AGG`**  
   Dizileri işlemek ve birleştirmek için kullanılır.
   
    ```sql
+   SELECT ARRAY[1, 2, 3];
+   SELECT ARRAY_AGG(column_name) FROM table_name; 
    ```
     
 - **`REGEXP_SPLIT_TO_TABLE`**  
@@ -749,14 +759,34 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 	 ```
 
 - **`UUID`**  
-  Evrensel benzersiz tanımlayıcı.  
+  Evrensel benzersiz tanımlayıcı.
+
+  ```sql
+  SELECT uuid_generate_v4(); 
+  ```
+  
 - **`BYTEA`**  
-  İkili veri saklamak için kullanılır.  
+  İkili veri saklamak için kullanılır.
+
+  ```sql
+  INSERT INTO files (data) VALUES (decode('DEADBEEF', 'hex'));
+  ```
+  
 - **`ENUM`**  
-  Kısıtlı değerler listesi sağlar.  
+  Kısıtlı değerler listesi sağlar.
+  
+  ```sql
+  CREATE TYPE mood AS ENUM ('sad', 'ok', 'happy');
+  ```
+    
 - **`GEOMETRY`, `GEOGRAPHY`**  
   Coğrafi verileri saklamak için (PostGIS eklentisi ile).
-  
+    
+  ```sql
+  CREATE TABLE places (location GEOMETRY);
+  CREATE TABLE places (location GEOGRAPHY);
+  ```
+    
 ### Veri Yapıları ve İndeksler
 - **`INDEX`**  
   Veritabanı sorgularının hızını artırmak için kullanılır.
@@ -769,6 +799,8 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Varsayılan indeks türüdür ve verileri sıralı olarak tutar.
   
      ```sql
+    CREATE INDEX idx_name ON table_name USING BTREE(column_name);
+
    DROP INDEX table_json_docs_idx;
    -- CREATE INDEX On table_json Using GIN(docs jsonb_path_ops);
    CREATE INDEX table_json_docs_idx On table_json Using GIN(docs jsonb_path_ops);
@@ -779,7 +811,12 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
    ```
      
 - **`HASH`**  
-  Hash tabanlı indeksler sağlar.  
+  Hash tabanlı indeksler sağlar.
+
+  ```sql
+  CREATE INDEX idx_name ON table_name USING HASH(column_name);
+  ```
+  
 - **`GIN`**  
   JSONB ve diğer koleksiyon türleri için kullanılır.
   
@@ -797,18 +834,21 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Coğrafi ve diğer yapılandırılmış veriler için kullanılır.
   
    ```sql
+   CREATE INDEX idx_name ON table_name USING GiST(geometry_column);
     ```
    
 - **`SP-GiST`**  
   Uzamsal veriler için kullanılır.
 
    ```sql
+   CREATE INDEX idx_name ON table_name USING SPGIST(geometry_column);
     ```
    
 - **`BRIN`**  
   Büyük veri kümeleri için etkili bir indeks türüdür.
 
    ```sql
+   CREATE INDEX idx_name ON table_name USING BRIN(column_name);
     ```
 
 ### Diğer Yapılar
@@ -1145,10 +1185,6 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 ## 7. Performans ve Kilitleme
 
 ### Kilitleme Seçenekleri
-- **`WITH (NOLOCK)`**  
-  Okuma işlemleri sırasında tablolarda kilitlenmeleri engeller ve okuma kilitlenmeleri olmadan veri okur.
-   ```sql
-   ```
 - **`SKIP LOCKED`**  
   Kilitlenmiş satırları atlar ve sadece kilitlenmemiş satırları okur.
   
@@ -1166,7 +1202,12 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
    FROM Sales.Orders
    FOR UPDATE NOWAIT;
   ```
-     
+- **`VACUUM `**  
+  Gereksiz verileri temizler ve disk alanı geri kazanılır.
+  
+  ```sql
+  VACUUM FULL; 
+  ```
 ### Transaction Isolation Level
  İşlemlerin izolasyon seviyelerini belirler.
   ```sql 
@@ -1195,6 +1236,8 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Veritabanı etkinliğini ve performansını görüntüler.
   
 	 ```sql
+ 	 SELECT * FROM pg_stat_activity;
+	 SELECT * FROM pg_stat_database;
 	 ```
 
 ### Veritabanı Bilgisi
@@ -1205,6 +1248,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
    SELECT *
    FROM pg_tables
    ORDER BY schemaname;
+   SELECT * FROM pg_indexes WHERE tablename = 'your_table';
   ```
    
   - **`CATALOG`**  
@@ -1223,8 +1267,11 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 ### Kümeleme ve Birleştirme
 - **`CLUSTER`**  
   Tabloyu bir dizine göre sıralar ve fiziksel olarak yeniden düzenler.
+  
    ```sql
+   CLUSTER table_name USING index_name;
     ```
+   
 - **`INTERSECT`**  
   İki sorgunun kesişim kümesini döndürür. Ortak olan satırları getirir.
   
@@ -1267,6 +1314,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   İndeksleri yeniden oluşturur.
 
    ```sql
+   REINDEX TABLE table_name;  -- Tablo için indeksleri yeniden oluşturur
     ```
    
 - **`ANALYZE`**  
@@ -1583,6 +1631,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Tablo örneklemesi sağlar.
   
 	```sql
+ 	SELECT * FROM table_name TABLESAMPLE SYSTEM (10);
 	```
 
 ### ROW LEVEL SECURITY
@@ -1590,6 +1639,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Satır bazında güvenlik sağlar.
   
 	```sql
+	 ALTER TABLE table_name ENABLE ROW LEVEL SECURITY;
 	```
  
 ### TEMPORARY TABLES
@@ -1597,6 +1647,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Geçici tablolar oluşturur ve bu tablolar sadece oturum süresince geçerli olur.
   
 	```sql
+ 	CREATE TEMP TABLE temp_table_name AS SELECT * FROM existing_table;
 	```
  
 ### LISTAGG
@@ -1605,4 +1656,10 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   
 	```sql
 	```
- 
+### IN
+- **`IN`** 
+   Bir veri setinde belirli bir değeri aramak için kullanılır.
+  
+	```sql
+ 	SELECT * FROM table_name WHERE column_name IN ('value1', 'value2');
+	```
