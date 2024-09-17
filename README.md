@@ -531,7 +531,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
   Dizinin uzunluğunu döndürür.
   
 	```sql
-  	SELECT ARRAY_LENGTH(ARRAY[1, 2, 3], 1);  -- 3 döner
+  	SELECT ARRAY_LENGTH(ARRAY[1, 2, 3], 1); 
 	```
 
 - **`ARRAY` ve `ARRAY_AGG`**  
