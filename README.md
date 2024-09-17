@@ -607,14 +607,7 @@ Aşağıda yer alan sorgu dosyasındaki veri setini postgresql üzerinde sıras�
 - **`JSON`, `JSONB`**  
   JSON verilerini saklar. `JSONB` daha verimli bir depolama sağlar.
   
-  ```sql
-  SELECT
-  title,
-  book_info -> 'publisher' as "publisher",
-  book_info -> 'Kagit_Baski_Fiyati' as "KagitBaski",
-  book_info -> 'Digital_Baski_Fiyati' as "DigitalBaski"
-  FROM Table_hstore;
-   
+  ```sql   
   -- JSON  Data Type
   DROP TABLE IF EXISTS Table_json;
    
