@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>PostgreSQL Tutorial - README</title>
+  <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f8f9fa;
+    }
+    #readme {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    pre {
+      background: #f1f1f1;
+      padding: 1rem;
+      overflow: auto;
+    }
+    code {
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div id="readme">Yükleniyor...</div>
+
+  <script>
+    const readmeUrl = "https://raw.githubusercontent.com/erdincdegirmenci/postgresql-tutorial/main/README.md";
+
+    fetch(readmeUrl)
+      .then(response => response.text())
+      .then(markdown => {
+        const converter = new showdown.Converter();
+        const html = converter.makeHtml(markdown);
+        document.getElementById("readme").innerHTML = html;
+      })
+      .catch(err => {
+        document.getElementById("readme").innerHTML = "README yüklenemedi: " + err.message;
+      });
+  </script>
+</body>
+</html>
